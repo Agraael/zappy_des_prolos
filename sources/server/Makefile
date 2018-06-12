@@ -13,7 +13,7 @@ NAME            = ../../zappy_server
 
 SRCS            = main.c		\
 
-OBJS            = $(SRCS:.cpp=.o)
+OBJS            = $(SRCS:.c=.o)
 
 
 
