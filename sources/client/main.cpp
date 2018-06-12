@@ -14,10 +14,6 @@ void    help()
 	std::cout << SECONDLINE << std::endl;
 	std::cout << THIRDLINE << std::endl;
 	std::cout << FOURTHLINE << std::endl;
-	std::cout << FIFTHLINE << std::endl;
-	std::cout << SIXTHLINE << std::endl;
-	std::cout << SEVENTHLINE << std::endl;
-	std::cout << EIGHTHLINE << std::endl;
 }
 
 int	main(int, char **)

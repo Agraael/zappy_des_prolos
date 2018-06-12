@@ -8,11 +8,10 @@
 CC              = gcc
 
 CPPFLAGS        += -W -Wall -Wextra
-CPPFLAGS        += -std=c++14
 
-NAME            = .././zappy_server
+NAME            = ../../zappy_server
 
-SRCS            = main.cpp		\
+SRCS            = main.c		\
 
 OBJS            = $(SRCS:.cpp=.o)
 
