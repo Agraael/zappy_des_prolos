@@ -25,12 +25,12 @@ static char *randomly_fill_with_minerals(char *line, int size_y)
 	int y = 0;
 
 	for (y = 0; y < size_y; y++) {
-		if ((line[y] == FOOD + 48) || (rand() % 2 == 0))
+		if ((line[y] == FOOD) || (rand() % 2 == 0))
 			continue ;
                 mineral = rand() % 5;
 		for (int i = 0; i < 5; i++)
 			if (mineral == stonetab[i].id)
-				line[y] = stonetab[i].stone + 48;
+				line[y] = stonetab[i].stone;
         }
         line[y]	= '\0';
 	return (line);
@@ -43,10 +43,10 @@ static char *randomly_fill_with_food(int size_y)
 
 	for (y = 0; y < size_y; y++) {
 		usleep(103 + y);
-		if (rand() % 11 == 3)
-			line[y] = FOOD + 48;
+		if (rand() % 7 == 3)
+			line[y] = FOOD;
 		else
-			line[y] = STONE + 48;
+			line[y] = STONE;
 	}
 	line[y] = '\0';
 	return (line);
@@ -66,13 +66,3 @@ void generate_map(infos_t *infos_game)
 		infos_game->map[x] = randomly_fill_with_minerals(infos_game->map[x], infos_game->map_size.y);
 	}
 }
-
-/*int main()
-{
-	infos_t infos;
-
-	infos.map_size.x = 20;
-	infos.map_size.y = 20;
-	generate_map(&infos);
-		     
-	}*/
