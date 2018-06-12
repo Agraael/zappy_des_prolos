@@ -10,6 +10,20 @@
 
 #include <unistd.h>
 
+#define STONE 7
+#define FOOD 6
+#define LINEMATE 0
+#define DERAUMERE 1
+#define SIBUR 2
+#define MENDIANE 3
+#define PHIRAS 4
+#define THYSTAME 5
+
+typedef struct s_stonetab {
+	int id;
+	int stone;
+}	       t_stonetab;
+
 typedef	struct	s_functions {
 	char	*str;
 	void	(*func)(char *);
@@ -26,6 +40,7 @@ typedef struct	info_s {
 	char	**team_names;
 	int	clients_nb;
 	int	frequence;
+	char	**map;
 }		infos_t;
 
 typedef struct	stones_s {
