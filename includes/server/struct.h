@@ -8,6 +8,8 @@
 #ifndef STRUCT_H_
 	#define STRUCT_H_
 
+#include <unistd.h>
+
 typedef	struct	s_functions {
 	char	*str;
 	void	(*func)(char *);
@@ -25,5 +27,19 @@ typedef struct	info_s {
 	int	clients_nb;
 	int	frequence;
 }		infos_t;
+
+typedef struct	stones_s {
+	size_t	linemaute;
+	size_t	deraumere;
+	size_t	sibur;
+	size_t	mendiane;
+	size_t	phiras;
+	size_t	thystane;
+}		stone_t;
+
+typedef struct  client_s {
+	size_t	time_units;
+	stone_t	stones;
+}		client_t;
 
 #endif /* !STRUCT_H_ */
