@@ -7,8 +7,9 @@
 
 CC              =  g++
 
-CPPFLAGS        += -W -Wall -Wextra
-CPPFLAGS        += -std=c++14
+CPPFLAGS        +=	-W -Wall -Wextra
+CXXFLAGS        +=	-std=c++14
+CFLAGS		= 	-I ../../includes/client/
 
 NAME            =       ../../zappy_ai 	
 
@@ -28,4 +29,3 @@ fclean :	clean
 re :		fclean all
 
 .PHONY :	all clean fclean re
-

@@ -5,17 +5,17 @@
 ## makefile
 ##
 
-CC              = gcc
+CC		= gcc
 
-CPPFLAGS        += -W -Wall -Wextra
+CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors
+CFLAGS		= -I ../../includes/server/
 
-NAME            = ../../zappy_server
+NAME		= ../../zappy_server
 
-SRCS            = main.c		\
+SRCS            =	main.c		\
+			checkargs.c
 
 OBJS            = $(SRCS:.c=.o)
-
-
 
 all :		$(OBJS)
 		$(CC) $(CPPFLAGS) $(OBJS) -o $(NAME)

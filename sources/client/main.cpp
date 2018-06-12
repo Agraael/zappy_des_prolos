@@ -6,7 +6,7 @@
 */
 
 #include <iostream>
-#include "../../includes/client/help.hpp"
+#include "help.hpp"
 
 void    help()
 {

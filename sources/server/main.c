@@ -6,7 +6,8 @@
 */
 
 #include <stdio.h>
-#include "../../includes/server/help.h"
+#include "help.h"
+#include "fcts.h"
 
 void    help()
 {
@@ -22,7 +23,7 @@ void    help()
 
 int	main(int ac, char **av)
 {
-        (void)ac;
-        (void)av;
+	if (checkargs(ac, av) == 84)
+		return (84);
 	help();
 }
