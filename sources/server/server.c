@@ -6,8 +6,35 @@
 */
 
 #include "struct.h"
+#include "fcts.h"
 #include <string.h>
 #include <stdlib.h>
+
+static const t_serv_functions tab[] = {
+        {"forward", &fct_server_forward, 7},
+        {"right", &fct_server_right, 5},
+        {"left", &fct_server_left, 4},
+        {"look", &fct_server_look, 4},
+        {"inventory", &fct_server_inventory, 9},
+        {"broadcast text", &fct_server_broadcast, 14},
+        {"connect_nbr", &fct_server_connectnbr, 11},
+        {"fork", &fct_server_fork, 4},
+        {"eject", &fct_server_eject, 5},
+        {"take object", &fct_server_take, 11},
+        {"set object", &fct_server_setobject, 10},
+	{"incantation", &fct_server_incantation, 11}
+};
+
+static int assign_to_function(t_env *e, int fd, char *buff)
+{
+        for (int i = 0; i != 11; i++) {
+                if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
+                        return (tab[i].pts(buff, fd, e));
+                }
+        }
+        return (0);
+}
+
 
 void client_read(t_env *e, int fd)
 {
@@ -22,7 +49,7 @@ void client_read(t_env *e, int fd)
 		for (int x = 0; line[x]; line++) {
 			line[x] = epur(line[x]);
 			printf("->%s - %d\n", line[x], fd);
-			//  assign_to_function(e, fd, line[x]);
+			assign_to_function(e, fd, line[x]);
 		}
 	}
 	else {
