@@ -59,10 +59,13 @@ void generate_map(infos_t *infos_game)
 	srand(time(NULL));
 	infos_game->map = malloc(sizeof(char *) * (infos_game->map_size.x + 1));
 	for (x = 0; x < infos_game->map_size.x; x++) {
-		infos_game->map[x] = randomly_fill_with_food(infos_game->map_size.y);
+		infos_game->map[x] =
+			randomly_fill_with_food(infos_game->map_size.y);
 	}
 	infos_game->map[x] = '\0';
 	for (x = 0; x < infos_game->map_size.x; x++) {
-		infos_game->map[x] = randomly_fill_with_minerals(infos_game->map[x], infos_game->map_size.y);
+		infos_game->map[x] =
+			randomly_fill_with_minerals(infos_game->map[x],
+							infos_game->map_size.y);
 	}
 }

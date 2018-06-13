@@ -13,7 +13,12 @@ CFLAGS		= -I ../../includes/server/
 NAME		= ../../zappy_server
 
 SRCS            =	main.c		\
-			checkargs.c
+			str_to_wordtab.c	\
+			utils.c		\
+			checkargs.c	\
+			server.c	\
+			loop_server.c	\
+			map_generation/generator.c
 
 OBJS            = $(SRCS:.c=.o)
 
