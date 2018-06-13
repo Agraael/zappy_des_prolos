@@ -31,6 +31,7 @@ int	main(int ac, char **av)
 	infos.map_size.x = 10;
 	infos.map_size.y = 10;
 	infos.port = 4227;
+	printf("i create a map of 10x10 and launch the server in port 4227\n");
 	generate_map(&infos);
 	create_server(&infos);
 }
