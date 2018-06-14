@@ -11,6 +11,7 @@
 #include "struct.h"
 
 int	checkargs(int, char **);
+vec_t create_random_pos(vec_t map_size);
 int fct_server_incantation(char *cmd_line, int fd, t_env *e);
 int fct_server_forward(char *cmd_line, int fd, t_env *e);
 int fct_server_right(char *cmd_line, int fd, t_env *e);

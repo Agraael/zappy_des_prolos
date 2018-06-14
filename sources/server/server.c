@@ -27,12 +27,12 @@ static const t_serv_functions tab[] = {
 
 static int assign_to_function(t_env *e, int fd, char *buff)
 {
-        for (int i = 0; i != 11; i++) {
-                if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
-                        return (tab[i].pts(buff, fd, e));
-                }
-        }
-        return (0);
+	for (int i = 0; i != 11; i++) {
+		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
+			return (tab[i].pts(buff, fd, e));
+		}
+	}
+	return (0);
 }
 
 
@@ -46,7 +46,7 @@ void client_read(t_env *e, int fd)
 	if (r > 0) {
 		buf[r] = '\0';
 		line = my_str_to_wordtab(buf, '\n');
-		for (int x = 0; line[x]; line++) {
+		for (int x = 0; line[x] && x < 10; line++) {
 			line[x] = epur(line[x]);
 			printf("->%s - %d\n", line[x], fd);
 			assign_to_function(e, fd, line[x]);
@@ -69,6 +69,9 @@ static void add_client(t_env *e, int s)
 	e->fd_type[cs] = FD_CLIENT;
 	e->fct_read[cs] = client_read;
 	e->fct_write[cs] = NULL;
+	e->pos_ia[cs] = create_random_pos(e->infos->map_size);
+	e->vision_field[cs] = 1;
+	e->dir[cs] = LEFT;
 }
 
 static void server_read(t_env *e, int fd)

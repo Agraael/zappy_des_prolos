@@ -29,11 +29,20 @@
 #define FD_CLIENT 1
 #define FD_SERVER 2
 #define MAX_FD 255
+#define RIGHT 0
+#define LEFT 1
+#define UP 2
+#define DOWN 3
 
 typedef struct s_stonetab {
 	int id;
 	int stone;
 }	       t_stonetab;
+
+typedef struct s_printtab {
+	int stone;
+	char *print;
+}              t_printtab;
 
 typedef	struct	s_functions {
 	char	*str;
@@ -51,7 +60,7 @@ typedef struct	info_s {
 	char	**team_names;
 	int	clients_nb;
 	int	frequence;
-	char	**map;
+	char	***map;
 }		infos_t;
 // anat
 
@@ -63,9 +72,9 @@ typedef struct s_env
         fct fct_read[MAX_FD];
         fct fct_write[MAX_FD];
         infos_t *infos;
-        //int is_logged[MAX_FD];                                                                         
-        //char *nickname[MAX_FD];                                                                        
-        //char *user[MAX_FD];                                                                            
+	int dir[MAX_FD];
+	int vision_field[MAX_FD];
+	vec_t pos_ia[MAX_FD];
 } t_env;
 
 typedef struct s_serv_functions {

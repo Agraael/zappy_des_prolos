@@ -9,6 +9,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+vec_t create_random_pos(vec_t map_size)
+{
+	vec_t pos_ia;
+
+	pos_ia.x = rand() % map_size.x - 1;
+	pos_ia.y = rand() % map_size.y - 1;
+	return (pos_ia);
+}
+
 char *epur(char *test)
 {
 	char *new = NULL;
@@ -30,17 +39,3 @@ char *epur(char *test)
 	new[y] = '\0';
 	return (new);
 }
-
-/*
-void print_to_user(t_chan_infos *server, char *cmd_line, t_env *e)
-{
-	int client_fd = 0;
-
-	for (int i = 0; i < 255; i++) {
-		if (server->members_in[i]) {
-			client_fd = find_good_fd(server->members_in[i],
-						server->nicknames_in[i], e);
-			dprintf(client_fd, "%s\r\n", cmd_line);
-		}
-	}
-	}*/
