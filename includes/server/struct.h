@@ -10,22 +10,17 @@
 
 #include <unistd.h>
 
-typedef	struct	s_functions {
-	char	*str;
-	void	(*func)(char *);
-}		t_functions;
-
-typedef struct	vector_s {
-	int	x;
-	int	y;
+typedef struct	vec_s {
+	size_t	x;
+	size_t	y;
 }		vec_t;
 
 typedef struct	info_s {
-	int	port;
+	size_t	port;
 	vec_t	map_size;
 	char	**team_names;
-	int	clients_nb;
-	int	frequence;
+	size_t	clients_nb;
+	size_t	frequence;
 }		infos_t;
 
 typedef struct	stones_s {
@@ -41,5 +36,10 @@ typedef struct  client_s {
 	size_t	time_units;
 	stone_t	stones;
 }		client_t;
+
+typedef	struct	s_functions {
+	char	*str;
+	int	(*func)(char **, size_t, infos_t **);
+}		t_functions;
 
 #endif /* !STRUCT_H_ */

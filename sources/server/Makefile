@@ -13,7 +13,11 @@ CFLAGS		= -I ../../includes/server/
 NAME		= ../../zappy_server
 
 SRCS            =	main.c		\
-			checkargs.c
+			check_args.c	\
+			check_flags.c	\
+			handle_infos.c	\
+			help.c		\
+			utils.c
 
 OBJS            = $(SRCS:.c=.o)
 
