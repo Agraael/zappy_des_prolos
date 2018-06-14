@@ -5,6 +5,7 @@
 ** fz
 */
 
+#include "fcts.h"
 #include "struct.h"
 
 int fct_server_right(char *cmd_line, int fd, t_env *e)

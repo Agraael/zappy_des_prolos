@@ -6,6 +6,7 @@
 */
 
 #include "struct.h"
+#include "fcts.h"
 
 int fct_server_left(char *cmd_line, int fd, t_env *e)
 {
