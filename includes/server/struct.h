@@ -44,22 +44,17 @@ typedef struct s_printtab {
 	char *print;
 }              t_printtab;
 
-typedef	struct	s_functions {
-	char	*str;
-	void	(*func)(char *);
-}		t_functions;
-
-typedef struct	vector_s {
-	int	x;
-	int	y;
+typedef struct	vec_s {
+	size_t	x;
+	size_t	y;
 }		vec_t;
 
 typedef struct	info_s {
-	int	port;
+	size_t	port;
 	vec_t	map_size;
 	char	**team_names;
-	int	clients_nb;
-	int	frequence;
+	size_t	clients_nb;
+	size_t	frequence;
 	char	***map;
 }		infos_t;
 // anat
@@ -98,10 +93,9 @@ typedef struct  client_s {
 	stone_t	stones;
 }		client_t;
 
-int loop_server(t_env *e);
-char *epur(char *test);
-char **my_str_to_wordtab(char *str, char delim);
-void create_server(infos_t *infos);
-void generate_map(infos_t *infos_game);
+typedef	struct	s_functions {
+	char	*str;
+	int	(*func)(char **, size_t, infos_t **);
+}		t_functions;
 
 #endif /* !STRUCT_H_ */

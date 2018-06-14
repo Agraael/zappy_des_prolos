@@ -8,6 +8,7 @@
 all :
 		make -C ./sources/server/
 		make -C ./sources/client/
+
 zappy_server :	make -C ./sources/server/
 
 zappy_ai :

@@ -8,9 +8,20 @@
 #ifndef FTCS_H_
 	#define FTCS_H_
 
+#include <stdbool.h>
 #include "struct.h"
 
-int	checkargs(int, char **);
+int	checkargs(int, char **, infos_t *);
+int	check_port(char **, size_t, infos_t **);
+int	check_width(char **, size_t, infos_t **);
+int	check_height(char **, size_t, infos_t **);
+int	check_names(char **, size_t, infos_t **);
+int	check_client_nb(char **, size_t, infos_t **);
+int	check_freq(char **, size_t, infos_t **);
+int	help(char **, size_t, infos_t **);
+void	init_default_info(infos_t **);
+bool    is_str_digit(char *);
+bool	check_validity(infos_t *);
 vec_t create_random_pos(vec_t map_size);
 void verif_pos(int fd, t_env *e);
 int fct_server_incantation(char *cmd_line, int fd, t_env *e);
@@ -25,5 +36,10 @@ int fct_server_fork(char *cmd_line, int fd, t_env *e);
 int fct_server_eject(char *cmd_line, int fd, t_env *e);
 int fct_server_take(char *cmd_line, int fd, t_env *e);
 int fct_server_setobject(char *cmd_line, int fd, t_env *e);
+int loop_server(t_env *e);
+char *epur(char *test);
+char **my_str_to_wordtab(char *str, char delim);
+void create_server(infos_t *infos);
+void generate_map(infos_t *infos_game);
 
 #endif /* !FTCS_H_ */

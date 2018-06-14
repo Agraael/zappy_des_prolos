@@ -13,11 +13,15 @@ CFLAGS		= -I ../../includes/server/
 NAME		= ../../zappy_server
 
 SRCS            =	main.c		\
+			check_flags.c	\
+			handle_infos.c	\
 			str_to_wordtab.c	\
 			utils.c		\
-			checkargs.c	\
+			check_args.c	\
 			server.c	\
+			help.c		\
 			loop_server.c	\
+			functions/fct_server_look_direction.c \
 			functions/fct_server_forward.c	\
 			functions/fct_server_right.c	\
 			functions/fct_server_left.c	\

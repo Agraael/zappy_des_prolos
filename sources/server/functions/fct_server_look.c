@@ -5,6 +5,7 @@
 ** ite
 */
 
+#include "fcts.h"
 #include "struct.h"
 
 static const t_printtab stonetab[] = {
@@ -20,12 +21,12 @@ static void print_stone(int stone, int fd)
 {
 	for (int i = 0; i < 6; i++) {
 		if (stone == stonetab[i].stone)
-			dprintf(fd, " %s", stonetab[i].print);
+			dprintf(fd, "%s", stonetab[i].print);
 	}
 
 }
 
-static void print_case(int fd, t_env *e, vec_t pos)
+void print_case(int fd, t_env *e, vec_t pos)
 {
 	if (pos.x < 0)
 		pos.x = pos.x + e->infos->map_size.x - 1;
@@ -35,37 +36,40 @@ static void print_case(int fd, t_env *e, vec_t pos)
 		pos.y = pos.y - (e->infos->map_size.y - 1);
 	else if (pos.x >= e->infos->map_size.x)
 		pos.x = pos.x - (e->infos->map_size.x - 1);
-	if (e->infos->map[pos.x][pos.y][0] == STONE) {
-		dprintf(fd, "bite,");
-	else
-		dprintf(2, "bite,");
+	if (e->infos->map[pos.x][pos.y][0] == STONE)
+		dprintf(fd, ",");
+	else {
+		for (int x = 0; e->infos->map[pos.x][pos.y][x]; x++) {
+			print_stone(e->infos->map[pos.x][pos.y][x], fd);
+			if (e->infos->map[pos.x][pos.y][x + 1])
+				dprintf(fd, " ");
+		}
+		dprintf(fd, ",");
+	}
 }
 
 static void print_lines(int fd, t_env *e, int nbr_of_lines)
 {
-	//left
-	int i = nbr_of_lines * -1;
-	vec_t case_pos = e->pos_ia[fd];
-	vec_t atm_pos = case_pos;
-
-	for (int x = 1; x < nbr_of_lines; x++) {
-		case_pos.y -= 1;
-		atm_pos = case_pos;
-		for (i = x * -1; i <= x; i++) {
-			atm_pos.x = case_pos.x + i;
-			print_case(fd, e, atm_pos);
-		}
-	}
-	dprintf(fd, "\n");
+	if (e->dir[fd] == UP)
+		print_lines_up(fd, e, nbr_of_lines);
+	else if (e->dir[fd] == DOWN)
+		print_lines_down(fd, e, nbr_of_lines);
+	if (e->dir[fd] == LEFT)
+		print_lines_left(fd, e, nbr_of_lines);
+	if (e->dir[fd] == RIGHT)
+		print_lines_right(fd, e, nbr_of_lines);
+	dprintf(fd, "]\n");
 }
 
 int fct_server_look(char *cmd_line, int fd, t_env *e)
 {
 	(void)cmd_line;
 	e->vision_field[fd] = 3;
+	printf("%d, %d - %d - %d", e->infos->map_size.x, e->infos->map_size.y, e->pos_ia[fd].x, e->pos_ia[fd].y);
 	if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] != STONE) {
 		dprintf(fd, "[player");
 		for (int x = 0; e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]; x++) {
+			dprintf(fd, " ");
 			print_stone(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], fd);
 		}
 		if (e->vision_field[fd] == 1) {
