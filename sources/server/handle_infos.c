@@ -17,7 +17,8 @@ bool	check_validity(infos_t *infos)
 	|| infos->clients_nb > 255
 	|| infos->map_size.x == 0 || infos->map_size.x > 100
 	|| infos->map_size.y == 0 || infos->map_size.y > 100
-	|| (infos->port < 1024 || infos->port > 65535)) {
+	|| (infos->port < 1024 || infos->port > 65535)
+	|| infos->team_names == NULL) {
 		dprintf(2, "%s\n", ARGS_PROBLEM);
 		return false;
 	}

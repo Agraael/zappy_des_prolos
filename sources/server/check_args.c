@@ -52,8 +52,5 @@ int     checkargs(int ac, char **av, infos_t *infos)
 	}
 	if (!(check_validity(infos)))
 		return 84;
-	for (int i = 0; infos->team_names[i]; ++i) {
-		printf("%s\n", infos->team_names[i]);
-	}
 	return (0);
 }

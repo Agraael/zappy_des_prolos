@@ -22,5 +22,23 @@ int	help(char **, size_t, infos_t **);
 void	init_default_info(infos_t **);
 bool    is_str_digit(char *);
 bool	check_validity(infos_t *);
+vec_t create_random_pos(vec_t map_size);
+int fct_server_incantation(char *cmd_line, int fd, t_env *e);
+int fct_server_forward(char *cmd_line, int fd, t_env *e);
+int fct_server_right(char *cmd_line, int fd, t_env *e);
+int fct_server_left(char *cmd_line, int fd, t_env *e);
+int fct_server_look(char *cmd_line, int fd, t_env *e);
+int fct_server_inventory(char *cmd_line, int fd, t_env *e);
+int fct_server_broadcast(char *cmd_line, int fd, t_env *e);
+int fct_server_connectnbr(char *cmd_line, int fd, t_env *e);
+int fct_server_fork(char *cmd_line, int fd, t_env *e);
+int fct_server_eject(char *cmd_line, int fd, t_env *e);
+int fct_server_take(char *cmd_line, int fd, t_env *e);
+int fct_server_setobject(char *cmd_line, int fd, t_env *e);
+int loop_server(t_env *e);
+char *epur(char *test);
+char **my_str_to_wordtab(char *str, char delim);
+void create_server(infos_t *infos);
+void generate_map(infos_t *infos_game);
 
 #endif /* !FTCS_H_ */
