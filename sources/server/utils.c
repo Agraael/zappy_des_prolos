@@ -2,12 +2,27 @@
 ** EPITECH PROJECT, 2018
 ** utils
 ** File description:
-** fcts
+<<<<<<< HEAD
+** source
 */
 
-#include "struct.h"
-#include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include "struct.h"
+
+bool    is_str_digit(char *str)
+{
+        if (str == NULL)
+                return (false);
+        for (size_t i = 0; str[i] != '\0'; ++i) {
+                if (isdigit(str[i]) == false)
+                        return (false);
+        }
+        return (true);
+}
 
 vec_t create_random_pos(vec_t map_size)
 {

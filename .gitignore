@@ -50,4 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+vgcore.
 .vscode
+zappy_server
+zappy_ia
