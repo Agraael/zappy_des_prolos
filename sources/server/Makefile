@@ -21,6 +21,7 @@ SRCS            =	main.c		\
 			server.c	\
 			help.c		\
 			loop_server.c	\
+			functions/fct_server_look_direction.c \
 			functions/fct_server_forward.c	\
 			functions/fct_server_right.c	\
 			functions/fct_server_left.c	\
