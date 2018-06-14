@@ -10,7 +10,16 @@
 int fct_server_right(char *cmd_line, int fd, t_env *e)
 {
 	(void)cmd_line;
-        (void)fd;
-        (void)e;
+	if (e->dir[fd] == UP || e->dir[fd] == DOWN) {
+		if (e->dir[fd] == UP)
+			e->dir[fd] = RIGHT;
+		else
+			e->dir[fd] = LEFT;
+	} else {
+		if (e->dir[fd] == LEFT)
+			e->dir[fd] = UP;
+		else
+			e->dir[fd] = DOWN;
+	}
 	return (0);
 }
