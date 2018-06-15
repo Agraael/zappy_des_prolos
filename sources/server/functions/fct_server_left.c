@@ -22,5 +22,6 @@ int fct_server_left(char *cmd_line, int fd, t_env *e)
 		else
 			e->dir[fd] = UP;
 	}
+	dprintf(fd, "ok\n");
 	return (0);
 }
