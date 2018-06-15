@@ -6,6 +6,8 @@
 *.ko
 *.obj
 *.elf
+zappy_server
+zappy_ai
 
 # Linker output
 *.ilk
