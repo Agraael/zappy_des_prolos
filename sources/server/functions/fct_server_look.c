@@ -29,13 +29,17 @@ static void print_stone(int stone, int fd)
 void print_case(int fd, t_env *e, vec_t pos)
 {
 	if (pos.x < 0)
-		pos.x = pos.x + e->infos->map_size.x - 1;
+		while (pos.x < 0)
+			pos.x = pos.x + e->infos->map_size.x - 1;
 	else if (pos.y < 0)
-		pos.y = pos.y + e->infos->map_size.y - 1;
+		while (pos.y < 0)
+			pos.y = pos.y + e->infos->map_size.y - 1;
 	else if (pos.y >= e->infos->map_size.y)
-		pos.y = pos.y - (e->infos->map_size.y - 1);
+		while (pos.y >= e->infos->map_size.y)
+			pos.y = pos.y - (e->infos->map_size.y - 1);
 	else if (pos.x >= e->infos->map_size.x)
-		pos.x = pos.x - (e->infos->map_size.x - 1);
+		while (pos.x >= e->infos->map_size.x)
+			pos.x = pos.x - (e->infos->map_size.x - 1);
 	if (e->infos->map[pos.x][pos.y][0] == STONE)
 		dprintf(fd, ",");
 	else {

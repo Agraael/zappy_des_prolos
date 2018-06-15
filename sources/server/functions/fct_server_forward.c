@@ -36,5 +36,6 @@ int fct_server_forward(char *cmd_line, int fd, t_env *e)
 			e->pos_ia[fd].y += 1;
 	}
 	verif_pos(fd, e);
+	dprintf(fd, "ok\n");
 	return (0);
 }
