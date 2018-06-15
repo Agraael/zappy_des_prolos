@@ -45,8 +45,8 @@ typedef struct s_printtab {
 }              t_printtab;
 
 typedef struct	vec_s {
-	size_t	x;
-	size_t	y;
+	int	x;
+	int	y;
 }		vec_t;
 
 typedef struct	info_s {
