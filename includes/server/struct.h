@@ -49,10 +49,15 @@ typedef struct	vec_s {
 	int	y;
 }		vec_t;
 
+typedef struct s_infoteam {
+	char *name;
+	int players_remaining;
+} t_infoteam;
+
 typedef struct	info_s {
 	size_t	port;
 	vec_t	map_size;
-	char	**team_names;
+	t_infoteam *team_names;
 	size_t	clients_nb;
 	size_t	frequence;
 	char	***map;
@@ -66,6 +71,7 @@ typedef struct s_env
         char fd_type[MAX_FD];
         fct fct_read[MAX_FD];
         fct fct_write[MAX_FD];
+	int has_team[MAX_FD];
         infos_t *infos;
 	int dir[MAX_FD];
 	int vision_field[MAX_FD];

@@ -81,23 +81,23 @@ int	check_height(char **av, size_t index, infos_t **infos)
 	return 84;
 }
 
-char	**create_tab(char **av, int size, int index)
+static t_infoteam	*create_tab(char **av, int size, int index)
 {
 	int	i = 0;
-	char	**new_tab = malloc(sizeof(char *) * (size + 1));
+	t_infoteam	*new_tab = malloc(sizeof(t_infoteam) * (size + 1));
 
 	if (new_tab == NULL) {
 		dprintf(2, "%s\n", WRONG_NAMES);
 		return NULL;
 	}
 	for (; i < size; ++i) {
-		new_tab[i] = strdup(av[index + i]);
-		if (new_tab[i] == NULL) {
+		new_tab[i].name = strdup(av[index + i]);
+		if (new_tab[i].name == NULL) {
 			dprintf(2, "%s\n", WRONG_NAMES);
 			return NULL;
 		}
 	}
-	new_tab[i] = NULL;
+	new_tab[i].name = NULL;
 	return (new_tab);
 }
 

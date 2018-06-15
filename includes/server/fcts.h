@@ -29,6 +29,7 @@ void print_lines_right(int fd, t_env *e, int nbr_of_lines);
 void print_lines_up(int fd, t_env *e, int nbr_of_lines);
 void print_lines_down(int fd, t_env *e, int nbr_of_lines);
 void verif_pos(int fd, t_env *e);
+int fct_server_teamname(char *cmdline, int fd, t_env *e);
 int fct_server_incantation(char *cmd_line, int fd, t_env *e);
 int fct_server_forward(char *cmd_line, int fd, t_env *e);
 int fct_server_right(char *cmd_line, int fd, t_env *e);
