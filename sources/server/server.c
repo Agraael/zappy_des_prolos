@@ -1,3 +1,4 @@
+
 /*
 ** EPITECH PROJECT, 2018
 ** server
@@ -93,6 +94,8 @@ static void add_server(t_env *e)
 	e->fd_type[s] = FD_SERVER;
 	e->fct_read[s] = server_read;
 	e->fct_write[s] = NULL;
+	
+
 }
 
 void create_server(infos_t *infos)
@@ -100,6 +103,7 @@ void create_server(infos_t *infos)
 	t_env e;
 
 	memset(e.fd_type, FD_FREE, MAX_FD);
+	memset(e.inventory, 0, (size_t)MAX_FD * sizeof(stone_t));
 	e.infos = infos;
 	add_server(&e);
 	loop_server(&e);
