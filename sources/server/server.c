@@ -23,12 +23,21 @@ static const t_serv_functions tab[] = {
         {"eject", &fct_server_eject, 5},
         {"take object", &fct_server_take, 11},
         {"set object", &fct_server_setobject, 10},
+	{"team-name", &fct_server_teamname, 9},
 	{"incantation", &fct_server_incantation, 11}
 };
 
 static int assign_to_function(t_env *e, int fd, char *buff)
 {
-	for (int i = 0; i != 11; i++) {
+	if (e->has_team[fd] != 1) {
+		if (strncmp(tab[11].str, buff, tab[11].length) == 0)
+                        return (tab[11].pts(buff, fd, e));
+		else {
+			dprintf(fd, "ko join a team first, with team-name name\n");
+			return (0);
+		}	
+	}
+	for (int i = 0; i != 12; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
 			return (tab[i].pts(buff, fd, e));
 		}
@@ -72,6 +81,7 @@ static void add_client(t_env *e, int s)
 	e->fct_write[cs] = NULL;
 	e->pos_ia[cs] = create_random_pos(e->infos->map_size);
 	e->vision_field[cs] = 1;
+	e->has_team[cs] = 0;
 	e->dir[cs] = LEFT;
 }
 
@@ -94,8 +104,8 @@ static void add_server(t_env *e)
 	e->fd_type[s] = FD_SERVER;
 	e->fct_read[s] = server_read;
 	e->fct_write[s] = NULL;
-	
-
+	for (int i = 0; e->infos->team_names[i].name; i++)
+		e->infos->team_names[i].players_remaining = e->infos->clients_nb;
 }
 
 void create_server(infos_t *infos)

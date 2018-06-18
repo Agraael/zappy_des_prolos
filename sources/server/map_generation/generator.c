@@ -11,7 +11,7 @@
 #include <time.h>
 
 static const t_stonetab stonetab[] = {
-	{0, LINEMATE},
+	{8, LINEMATE},
 	{1, DERAUMERE},
 	{2, SIBUR},
 	{3, MENDIANE},
