@@ -49,10 +49,15 @@ typedef struct	vec_s {
 	int	y;
 }		vec_t;
 
+typedef struct s_infoteam {
+	char *name;
+	int players_remaining;
+} t_infoteam;
+
 typedef struct	info_s {
 	size_t	port;
 	vec_t	map_size;
-	char	**team_names;
+	t_infoteam *team_names;
 	size_t	clients_nb;
 	size_t	frequence;
 	char	***map;
@@ -61,15 +66,26 @@ typedef struct	info_s {
 
 typedef void(*fct)();
 
+typedef struct	stones_s {
+	size_t	linemaute;
+	size_t	deraumere;
+	size_t	sibur;
+	size_t	mendiane;
+	size_t	phiras;
+	size_t	thystane;
+}		stone_t;
+
 typedef struct s_env
 {
         char fd_type[MAX_FD];
         fct fct_read[MAX_FD];
         fct fct_write[MAX_FD];
+	int has_team[MAX_FD];
         infos_t *infos;
 	int dir[MAX_FD];
 	int vision_field[MAX_FD];
 	vec_t pos_ia[MAX_FD];
+	stone_t inventory[MAX_FD];
 } t_env;
 
 typedef struct s_serv_functions {
@@ -79,14 +95,6 @@ typedef struct s_serv_functions {
 } t_serv_functions;
 	
 //fin
-typedef struct	stones_s {
-	size_t	linemaute;
-	size_t	deraumere;
-	size_t	sibur;
-	size_t	mendiane;
-	size_t	phiras;
-	size_t	thystane;
-}		stone_t;
 
 typedef struct  client_s {
 	size_t	time_units;
