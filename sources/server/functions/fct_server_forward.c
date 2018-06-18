@@ -23,7 +23,7 @@ void verif_pos(int fd, t_env *e)
 int fct_server_forward(char *cmd_line, int fd, t_env *e)
 {
 	(void)cmd_line;
-//	printf("%lu %lu\n", e->pos_ia[fd].x, e->pos_ia[fd].y);
+
 	if (e->dir[fd] == UP || e->dir[fd] == DOWN) {
 		if (e->dir[fd] == UP)
 			e->pos_ia[fd].x += 1;

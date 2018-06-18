@@ -6,17 +6,17 @@
 */
 
 #include <iostream>
-#include "help.hpp"
+#include "ParseArgs.hpp"
+#include "ConnectToServer.hpp"
 
-void    help()
+int	main(int, char **av)
 {
-	std::cout << FIRSTLINE << std::endl;
-	std::cout << SECONDLINE << std::endl;
-	std::cout << THIRDLINE << std::endl;
-	std::cout << FOURTHLINE << std::endl;
-}
+	ParseArgs	parse(av);
+	ConnectToServer	client(parse);
 
-int	main(int, char **)
-{
-	help();
+	parse.Parser();
+	if (parse.checkArgs() == 84)
+		return (84);
+	client.connectServer();
+	return 0;
 }
