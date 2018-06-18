@@ -16,14 +16,14 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#define STONE 7
-#define FOOD 6
-#define LINEMATE 0
 #define DERAUMERE 1
 #define SIBUR 2
 #define MENDIANE 3
 #define PHIRAS 4
 #define THYSTAME 5
+#define FOOD 6
+#define STONE 7
+#define LINEMATE 8
 
 #define FD_FREE 0
 #define FD_CLIENT 1
@@ -33,6 +33,17 @@
 #define LEFT 1
 #define UP 2
 #define DOWN 3
+
+typedef struct s_elevation {
+	int level;
+	size_t linemate;
+	size_t deraumere;
+	size_t sibur;
+	size_t mendiane;
+	size_t phiras;
+	size_t thystane;
+	int players_around;
+}		t_elevation;
 
 typedef struct s_stonetab {
 	int id;
