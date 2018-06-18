@@ -78,13 +78,18 @@ typedef struct	info_s {
 typedef void(*fct)();
 
 typedef struct	stones_s {
-	size_t	linemaute;
-	size_t	deraumere;
-	size_t	sibur;
-	size_t	mendiane;
-	size_t	phiras;
-	size_t	thystane;
-}		stone_t;
+    size_t linemate;
+    size_t deraumere;
+    size_t sibur;
+    size_t mendiane;
+    size_t phiras;
+    size_t thystame;
+}stone_t;
+
+typedef struct	inventory_s {
+    stone_t stone;
+    size_t food;
+}inventory_t;
 
 typedef struct s_env
 {
@@ -96,7 +101,7 @@ typedef struct s_env
 	int dir[MAX_FD];
 	int vision_field[MAX_FD];
 	vec_t pos_ia[MAX_FD];
-	stone_t inventory[MAX_FD];
+	inventory_t inventory[MAX_FD];
 } t_env;
 
 typedef struct s_serv_functions {

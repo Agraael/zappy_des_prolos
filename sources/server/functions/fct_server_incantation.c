@@ -17,7 +17,7 @@ static const t_elevation elevtab[] = {
 	{7, 2, 2, 2, 2, 2, 1, 6}
 };
 
-int check_players(t_env *e, int fd, stone_t *inventory)
+int check_players(t_env *e, int fd, inventory_t *inventory)
 {
 	int nbr_players = 0;
 
@@ -26,18 +26,18 @@ int check_players(t_env *e, int fd, stone_t *inventory)
                     e->pos_ia[x].x == e->pos_ia[fd].x &&
                     e->pos_ia[x].y == e->pos_ia[fd].y) {
 			nbr_players += 1;
-			inventory->linemaute += e->inventory[x].linemaute;
-			inventory->deraumere += e->inventory[x].deraumere;
-			inventory->sibur += e->inventory[x].sibur;
-			inventory->mendiane += e->inventory[x].mendiane;
-			inventory->phiras += e->inventory[x].phiras;
-			inventory->thystane += e->inventory[x].thystane;
+			inventory->stone.linemate += e->inventory[x].stone.linemate;
+			inventory->stone.deraumere += e->inventory[x].stone.deraumere;
+			inventory->stone.sibur += e->inventory[x].stone.sibur;
+			inventory->stone.mendiane += e->inventory[x].stone.mendiane;
+			inventory->stone.phiras += e->inventory[x].stone.phiras;
+			inventory->stone.thystame += e->inventory[x].stone.thystame;
 		}
 	}
 	return (nbr_players);
 }
 
-int do_incantation(stone_t *inventory, t_env *e, int fd)
+int do_incantation(inventory_t *inventory, t_env *e, int fd)
 {
 	int level = e->vision_field[fd];
 
@@ -45,12 +45,12 @@ int do_incantation(stone_t *inventory, t_env *e, int fd)
                 if (e->fd_type[x] == FD_CLIENT &&
                     e->pos_ia[x].x == e->pos_ia[fd].x &&
                     e->pos_ia[x].y == e->pos_ia[fd].y) {
-			for (; inventory->linemaute > 0; e->inventory[x].linemaute--);
-			for (; inventory->deraumere > 0; e->inventory[x].deraumere--);
-			for (; inventory->sibur > 0; e->inventory[x].sibur--);
-			for (; inventory->mendiane > 0; e->inventory[x].mendiane--);
-			for (; inventory->phiras > 0; e->inventory[x].phiras--);
-			for (; inventory->thystane > 0; e->inventory[x].thystane--);
+			for (; inventory->stone.linemate > 0; e->inventory[x].stone.linemate--);
+			for (; inventory->stone.deraumere > 0; e->inventory[x].stone.deraumere--);
+			for (; inventory->stone.sibur > 0; e->inventory[x].stone.sibur--);
+			for (; inventory->stone.mendiane > 0; e->inventory[x].stone.mendiane--);
+			for (; inventory->stone.phiras > 0; e->inventory[x].stone.phiras--);
+			for (; inventory->stone.thystame > 0; e->inventory[x].stone.thystame--);
 			e->vision_field[x] += 1;
 			dprintf(fd, "ok congrats you reached lvl %d\n", level);
 		}
@@ -61,7 +61,7 @@ int do_incantation(stone_t *inventory, t_env *e, int fd)
 int fct_server_incantation(char *cmd_line, int fd, t_env *e)
 {
 	int level = e->vision_field[fd];
-	stone_t inventory = e->inventory[fd];
+	inventory_t inventory = e->inventory[fd];
 	(void)cmd_line;
 
 	if (level >= 8) {
@@ -72,12 +72,12 @@ int fct_server_incantation(char *cmd_line, int fd, t_env *e)
 		dprintf(fd, "not enough players mah dude\n");
 		return (0);
 	} 	
-	else if (inventory.linemaute >= elevtab[level].linemate &&
-		 inventory.deraumere >= elevtab[level].deraumere &&
-		 inventory.sibur >= elevtab[level].sibur &&
-		 inventory.mendiane >= elevtab[level].mendiane &&
-		 inventory.phiras >= elevtab[level].phiras &&
-		 inventory.thystane >= elevtab[level].thystane) {
+	else if (inventory.stone.linemate >= elevtab[level].linemate &&
+		 inventory.stone.deraumere >= elevtab[level].deraumere &&
+		 inventory.stone.sibur >= elevtab[level].sibur &&
+		 inventory.stone.mendiane >= elevtab[level].mendiane &&
+		 inventory.stone.phiras >= elevtab[level].phiras &&
+		 inventory.stone.thystame >= elevtab[level].thystane) {
 		return (do_incantation(&inventory, e, fd));
 	}
 	dprintf(fd, "not enough stones\n");
