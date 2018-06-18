@@ -22,7 +22,7 @@ int check_players(t_env *e, int fd, inventory_t *inventory)
 	int nbr_players = 0;
 
 	for (int x = 0; x < MAX_FD; x++) {
-		if (e->fd_type[x] == FD_CLIENT && x != fd &&
+		if (e->fd_type[x] == FD_CLIENT &&
                     e->pos_ia[x].x == e->pos_ia[fd].x &&
                     e->pos_ia[x].y == e->pos_ia[fd].y) {
 			nbr_players += 1;
