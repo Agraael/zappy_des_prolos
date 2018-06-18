@@ -29,7 +29,7 @@ static const t_serv_functions tab[] = {
 
 static int assign_to_function(t_env *e, int fd, char *buff)
 {
-	if (e->has_team[fd] != 1) {
+	if (e->has_team[fd] == -1) {
 		if (strncmp(tab[11].str, buff, tab[11].length) == 0)
                         return (tab[11].pts(buff, fd, e));
 		else {
@@ -37,7 +37,7 @@ static int assign_to_function(t_env *e, int fd, char *buff)
 			return (0);
 		}	
 	}
-	for (int i = 0; i != 12; i++) {
+	for (int i = 0; i != 13; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
 			return (tab[i].pts(buff, fd, e));
 		}
@@ -81,7 +81,7 @@ static void add_client(t_env *e, int s)
 	e->fct_write[cs] = NULL;
 	e->pos_ia[cs] = create_random_pos(e->infos->map_size);
 	e->vision_field[cs] = 1;
-	e->has_team[cs] = 0;
+	e->has_team[cs] = -1;
 	e->dir[cs] = LEFT;
 }
 

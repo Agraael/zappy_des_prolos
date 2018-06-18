@@ -85,7 +85,7 @@ int fct_server_look(char *cmd_line, int fd, t_env *e)
 	else {
 		dprintf(fd, "[player");
 		if (e->vision_field[fd] == 1) {
-                        dprintf(fd, "]\n");
+			dprintf(fd, "]\n");
                         return (0);
                 }
 		dprintf(fd, ",");
