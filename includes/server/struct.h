@@ -78,7 +78,7 @@ typedef struct	info_s {
 typedef void(*fct)();
 
 typedef struct	stones_s {
-    size_t linemaute;
+    size_t linemate;
     size_t deraumere;
     size_t sibur;
     size_t mendiane;

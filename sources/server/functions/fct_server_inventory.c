@@ -12,7 +12,7 @@ int fct_server_inventory(char *cmd_line, int fd, t_env *e)
 	char buff[4096];
 	
 	sprintf(buff,"[%s %i,%s %i,%s %i,%s %i,%s %i,%s %i]\n", "linemate",
-		(int)e->inventory[fd].stone.linemaute, "deraumere",
+		(int)e->inventory[fd].stone.linemate, "deraumere",
 		(int)e->inventory[fd].stone.deraumere,"sibur",
 		(int)e->inventory[fd].stone.sibur, "mendiane",
 		(int)e->inventory[fd].stone.mendiane,"phiras",

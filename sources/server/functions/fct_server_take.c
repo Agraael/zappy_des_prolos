@@ -39,7 +39,7 @@ int fct_server_take(char *cmd_line, int fd, t_env *e)
 	if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] != STONE) {
 		for (int x = 0; e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]; x++) {
 			if (strncmp("linemate", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 8) == 0)
-				e->inventory[fd].stone.linemaute =  e->inventory[fd].stone.linemaute + 1;
+				e->inventory[fd].stone.linemate =  e->inventory[fd].stone.linemate + 1;
 			if (strncmp("deraumere", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 9) == 0)
 				e->inventory[fd].stone.deraumere =  e->inventory[fd].stone.deraumere + 1;
 			if (strncmp("sibur", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 5) == 0 )
