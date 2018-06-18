@@ -15,10 +15,10 @@ void print_lines_left(int fd, t_env *e, int nbr_of_lines)
         vec_t atm_pos = case_pos;
 
         for (int x = 1; x < nbr_of_lines; x++) {
-		case_pos.y -= 1;
+		case_pos.x -= 1;
                 atm_pos = case_pos;
                 for (i = x * -1; i <= x; i++) {
-                        atm_pos.x = case_pos.x + i;
+                        atm_pos.y = case_pos.y - i;
                         print_case(fd, e, atm_pos);
                 }
         }
@@ -31,10 +31,10 @@ void print_lines_right(int fd, t_env *e, int nbr_of_lines)
 	vec_t atm_pos = case_pos;
 
 	for (int x = 1; x < nbr_of_lines; x++) {
-		case_pos.y += 1;
+		case_pos.x += 1;
 		atm_pos = case_pos;
 		for (i = x * -1; i <= x; i++) {
-			atm_pos.x = case_pos.x + i;
+			atm_pos.y = case_pos.y - i;
 			print_case(fd, e, atm_pos);
 		}
 	}
@@ -47,10 +47,10 @@ void print_lines_up(int fd, t_env *e, int nbr_of_lines)
 	vec_t atm_pos = case_pos;
 
 	for (int x = 1; x < nbr_of_lines; x++) {
-		case_pos.x -= 1;
+		case_pos.y -= 1;
 		atm_pos = case_pos;
 		for (i = x * -1; i <= x; i++) {
-			atm_pos.y = case_pos.y + i;
+			atm_pos.x = case_pos.x - i;
 			print_case(fd, e, atm_pos);
 		}
 	}
@@ -63,10 +63,10 @@ void print_lines_down(int fd, t_env *e, int nbr_of_lines)
 	vec_t atm_pos = case_pos;
 
 	for (int x = 1; x < nbr_of_lines; x++) {
-		case_pos.x += 1;
+		case_pos.y += 1;
 		atm_pos = case_pos;
 		for (i = x * -1; i <= x; i++) {
-			atm_pos.y = case_pos.y + i;
+			atm_pos.x = case_pos.x - i;
 			print_case(fd, e, atm_pos);
 		}
 	}
