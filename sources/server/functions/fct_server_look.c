@@ -40,7 +40,6 @@ void print_case(int fd, t_env *e, vec_t pos)
 	if (pos.x >= e->infos->map_size.x)
 		while (pos.x >= e->infos->map_size.x)
 			pos.x = pos.x - (e->infos->map_size.x);
-	dprintf(2, "pos: %d %d\n", pos.x, pos.y);
 	if (e->infos->map[pos.x][pos.y][0] == STONE)
 		dprintf(fd, ",");
 	else {
@@ -66,25 +65,11 @@ static void print_lines(int fd, t_env *e, int nbr_of_lines)
 	dprintf(fd, "]\n");
 }
 
-static void print_map(t_env *e)
-{
-	for (int i = 0; i < e->infos->map_size.x; i++) {
-		for (int j = 0; j < e->infos->map_size.y; j++) {
-			printf("[");
-			for (int x = 0; e->infos->map[i][j][x] != '\0'; x++)
-				printf("%d-", e->infos->map[i][j][x]);
-			printf("]");
-		}
-		printf("\n");
-	}
-}
-
 int fct_server_look(char *cmd_line, int fd, t_env *e)
 {
 	(void)cmd_line;
 	e->vision_field[fd] = 3;
-	printf("%d, %d - %d - %d", e->infos->map_size.x, e->infos->map_size.y, e->pos_ia[fd].x, e->pos_ia[fd].y);
-	print_map(e);
+	//printf("%d, %d - %d - %d", e->infos->map_size.x, e->infos->map_size.y, e->pos_ia[fd].x, e->pos_ia[fd].y);
 	if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] != STONE) {
 		dprintf(fd, "[player");
 		for (int x = 0; e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]; x++) {
