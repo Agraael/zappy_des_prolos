@@ -29,6 +29,8 @@ static int is_num(char *cmd_line)
 
 int fct_server_teamname(char *cmd_line, int fd, t_env *e)
 {
+	int is_found = 0;
+
 	while (cmd_line[0] != '\0'  && cmd_line[0] != ' ')
 		cmd_line++;
 	if (!cmd_line || cmd_line[0] == '\0')
@@ -36,8 +38,12 @@ int fct_server_teamname(char *cmd_line, int fd, t_env *e)
 	cmd_line++;
 	for (int i = 0; e->infos->team_names[i].name; i++) {
 		if (strcmp(e->infos->team_names[i].name, cmd_line) == 0 ||
-		    (is_num(cmd_line) == 0 && i == atoi(cmd_line)))
+		    (is_num(cmd_line) == 0 && i == atoi(cmd_line))) {
 			e->infos->team_names[i] = add_teammember(i, fd, e);
+			is_found++;
+		}
 	}
+	if (is_found == 0)
+		dprintf(fd, "ko\n");
 	return (0);
 }
