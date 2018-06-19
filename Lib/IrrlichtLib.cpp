@@ -2,20 +2,20 @@
 // Created by Ludovica Pagliarani on 07/05/2018.
 //
 
-#include "LibEventManager.hpp"
 #include "IrrlichtLib.hpp"
 
-graphic::IrrlichtLib::IrrlichtLib() {
+graphic::IrrlichtLib::IrrlichtLib() : _receiver(new MyEventReceiver)
+{
 	_screenSize = {1080, 720};
-	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(_screenSize.x, _screenSize.y), 16, false, false, false, 0);
+	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(_screenSize.x, _screenSize.y), 16, false, false, false, _receiver);
 	if (!_device)
 		std::cout << "error device" << std::endl;
 	_device->setWindowCaption(L"INDIE DES BESTOS");
 	_driver = _device->getVideoDriver();
 	_sceneManager = _device->getSceneManager();
 	_guiEnv = _device->getGUIEnvironment();
-	_eventManager = std::make_shared<graphic::LibEventManager>(t_contextRecEvnt{_device, 0, nullptr});
-	_device->setEventReceiver(_eventManager.get());
+	//_eventManager = std::make_shared<graphic::LibEventManager>(t_contextRecEvnt{_device, 0, nullptr});
+	//_device->setEventReceiver(_eventManager.get());
 	_light = 255;
 }
 
@@ -61,46 +61,27 @@ irr::gui::IGUIButton	*graphic::IrrlichtLib::printButton(const infos_t &infos)
 	const wchar_t *nameToPrint = wideStr.c_str();
 	std::wstring wideStrDesc = std::wstring(infos._desc.begin(), infos._desc.end());
 	const wchar_t *descriptionToPrint = wideStrDesc.c_str();
-	irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
+	/*irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
 	butCustom->setDrawBorder(0);
 	butCustom->setImage(_driver->getTexture(infos._path.c_str()));
 	butCustom->setScaleImage(true);
 	butCustom->setUseAlphaChannel(true);
-	return (butCustom);
+	return (butCustom);*/
 
 }
 
-void graphic::IrrlichtLib::createListBox(const std::string &name)
-{
-    (void)name;
-    /*_listBox = _guiEnv->addListBox(irr::core::rect<irr::s32>(50, 140, 250, 210));
-	std::wstring wideStr = std::wstring(name.begin(), name.end());
-	const wchar_t *wideCStr = wideStr.c_str();
-	_listBox->addItem(wideCStr);
-    irr::gui::IGUIFileOpenDialog* dialog = _guiEnv->addFileOpenDialog(L"./gameMap/", true, 0, -1, true);*/
-
-}
-
-irr::gui::IGUIScrollBar	*graphic::IrrlichtLib::scrollBarButton(const infos_t &infos)
-{
-	drawText(200, 200, 30, "Brightness Control");
-	irr::gui::IGUIScrollBar* scrollbar = _guiEnv->addScrollBar(true,irr::core::rect<irr::s32>(150, 55, 350, 60), 0, infos._type);
-	scrollbar->setMax(255);
-	scrollbar->setPos(_guiEnv->getSkin()->getColor(irr::gui::EGDC_WINDOW).getAlpha());
-	return (scrollbar);
-}
-
-void	graphic::IrrlichtLib::setCamera(irr::scene::ISceneNode * child)
+void	graphic::IrrlichtLib::setCamera(irr::scene::ISceneNode * child, vec3df pos)
 {
 	irr::scene::ICameraSceneNode *cam= _sceneManager->addCameraSceneNode();
-	cam->setPosition(irr::core::vector3df(10, -10,-10));
+	cam->bindTargetAndRotation(true);
+	cam->setPosition(irr::core::vector3df(pos.x, pos.y, pos.z));
 	cam->setParent(child);
 	cam->setID(1);
 }
 
 void	graphic::IrrlichtLib::setCamera(const vec3df &pos, const vec3df &target)
 {
-	irr::scene::ICameraSceneNode *cam= _sceneManager->addCameraSceneNode();
+	irr::scene::ICameraSceneNode *cam = _sceneManager->addCameraSceneNode();
 	cam->setPosition(irr::core::vector3df(pos.x, pos.y, pos.z));
 	cam->setTarget(irr::core::vector3df(target.x, target.y, target.z));
 	cam->setID(1);
@@ -119,24 +100,36 @@ irr::scene::ISceneNode	*graphic::IrrlichtLib::createCube(const vec3df &pos, cons
 	return (n);
 }
 
-irr::gui::IGUIEditBox	*graphic::IrrlichtLib::drawEditBox(const infos_t &infos)
+irr::scene::ISceneNode  *graphic::IrrlichtLib::createBackground()
 {
-	std::wstring wideStr = std::wstring(infos._name.begin(), infos._name.end());
-	const wchar_t *nameToPrint = wideStr.c_str();
-	return _guiEnv->addEditBox(nameToPrint, irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h));
+    irr::scene::IAnimatedMesh* mesh = _sceneManager->getMesh("../Assets/background_forest.obj");
+    irr::scene::ISceneNode *node = _sceneManager->addAnimatedMeshSceneNode(mesh);
+    if (node) {
+        node->setScale(irr::core::vector3df(_screenSize.x, _screenSize.y, 25.8f));
+        node->setPosition(irr::core::vector3df(10, 30, 0));
+        node->setRotation(irr::core::vector3df(60.f, 0.f, 0.f));
+        //node->setMaterialTexture(0, _driver->getTexture(path.c_str()));
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        node->setID(42);
+    }
+    return (node);
+
 }
 
-irr::scene::ISceneNode	*graphic::IrrlichtLib::createSphere(const vec3df &pos, const std::string &path, irr::s32 id)
+irr::scene::ISceneNode  *graphic::IrrlichtLib::createSphere(const vec3df &pos, const std::string &path, irr::s32 id)
 {
-	irr::scene::ISceneNode *node = _sceneManager->addSphereSceneNode(0.5);
+    irr::scene::IAnimatedMesh* mesh = _sceneManager->getMesh("../Assets/stay.b3d");
+    irr::scene::ISceneNode *node = _sceneManager->addAnimatedMeshSceneNode(mesh);
+    if (node) {
+        node->setScale(irr::core::vector3df(55.8f, 55.8f, 25.8f));
+        node->setPosition(irr::core::vector3df(pos.x ,pos.y, pos.z));
+        node->setRotation(irr::core::vector3df(60.f, 0.f, 0.f));
+        node->setMaterialTexture(0, _driver->getTexture(path.c_str()));
+        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        node->setID(id);
+    }
+    return (node);
 
-	if (node) {
-		node->setPosition(irr::core::vector3df(pos.x,pos.y, pos.z));
-		node->setMaterialTexture(0, _driver->getTexture(path.c_str()));
-		node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-		node->setID(id);
-	}
-	return (node);
 }
 
 irr::scene::ISceneNode	*graphic::IrrlichtLib::createSphere(const vec3df &pos, const std::string &path, irr::s32 id, const sphere_t &sph)

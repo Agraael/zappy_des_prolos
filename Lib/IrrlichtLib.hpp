@@ -7,15 +7,10 @@
 
 #include <iostream>
 #include <map>
-#ifdef _WIN32
-#include <irrlicht.h>
-#else
 #include <irrlicht/irrlicht.h>
-#endif
-//#include <EventManager.hpp>
 #include <string>
 #include <memory>
-//#include "LibEventManager.hpp"
+#include "MyEventReciver.hpp"
 
 struct vec3df {
 	double	x;
@@ -33,10 +28,6 @@ struct	sphere_t {
 	bool	rotate;
 };
 
-#ifdef _IRR_WINDOWS_
-#pragma comment(lib, "Irrlicht.lib")
-#endif
-
 namespace graphic {
 	typedef struct infos_s
 	{
@@ -49,7 +40,6 @@ namespace graphic {
 		std::string _path;
 		std::string _name;
 		std::string _desc;
-		graphic::controllerUser _type;
 	} infos_t;
 	class IrrlichtLib
 	{
@@ -62,19 +52,22 @@ namespace graphic {
 			void			displayAll();
 			void			clearGui() noexcept;
 			void			clearScene() noexcept;
+            irr::scene::ISceneNode  *createBackground();
             void modifyLight(int nbr);
             void setSkinTransparency(irr::s32 alpha, irr::gui::IGUISkin *skin);
             irr::s32 getLight() { return _light; }
 			irr::scene::ISceneNode	*createCube(const vec3df &, const std::string &, irr::s32);
 			irr::scene::ISceneNode	*createSphere(const vec3df &, const std::string &, irr::s32);
 			irr::scene::ISceneNode	*createSphere(const vec3df &, const std::string &, irr::s32, const sphere_t &);
-			void			setCamera(irr::scene::ISceneNode *);
+			void			setCamera(irr::scene::ISceneNode *, vec3df pos);
 			void			setCamera(const vec3df &, const vec3df &t);
 			irr::gui::IGUIEditBox	*drawEditBox(const infos_t &);
 			irr::gui::IGUIButton	*printButton(const infos_t &);
 			void			drawText(size_t, size_t, size_t, std::string const&);
 			irr::gui::IGUIScrollBar	*scrollBarButton(const infos_t &);
-			std::shared_ptr<LibEventManager> const& getEventManager() const noexcept { return _eventManager; }
+            MyEventReceiver *getReceiver() { return _receiver; }
+            void modifyPosElem(irr::scene::ISceneNode  *elem, vec3df pos) { elem->setPosition(irr::core::vector3df(pos.x ,pos.y, pos.z)); }
+			//std::shared_ptr<LibEventManager> const& getEventManager() const noexcept { return _eventManager; }
 			vec2d const		&getScreenSize() const noexcept { return _screenSize; }
 			void createListBox(const std::string &name);
 		private:
@@ -84,7 +77,8 @@ namespace graphic {
 			irr::IrrlichtDevice				*_device;
 			irr::gui::IGUIEnvironment			*_guiEnv;
 			std::map<std::string, irr::video::ITexture *>	_mapTexture;
-			std::shared_ptr<graphic::LibEventManager>	_eventManager{nullptr};
+            MyEventReceiver *_receiver;
+			//std::shared_ptr<graphic::LibEventManager>	_eventManager{nullptr};
             irr::s32 _light;
 		    irr::gui::IGUIListBox*    _listBox;
 	};
