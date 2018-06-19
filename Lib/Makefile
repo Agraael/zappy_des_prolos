@@ -14,10 +14,9 @@ NAME		= grph
 SRCS            =	main.cpp		\
 			        IrrlichtLib.cpp \
 			        LettersController.cpp \
-			        GameInterface.cpp \
-				MyEventReciver.cpp \
+			        GameInterface.cpp
 
-OBJS            = $(SRCS:.c=.o)
+OBJS            = $(SRCS:.cpp=.o)
 
 all :		$(OBJS)
 		    $(CC) $(LIBFLAGS) $(OBJS) -o $(NAME)

@@ -61,12 +61,12 @@ irr::gui::IGUIButton	*graphic::IrrlichtLib::printButton(const infos_t &infos)
 	const wchar_t *nameToPrint = wideStr.c_str();
 	std::wstring wideStrDesc = std::wstring(infos._desc.begin(), infos._desc.end());
 	const wchar_t *descriptionToPrint = wideStrDesc.c_str();
-	/*irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
+	irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, 2, nameToPrint, descriptionToPrint);
 	butCustom->setDrawBorder(0);
 	butCustom->setImage(_driver->getTexture(infos._path.c_str()));
 	butCustom->setScaleImage(true);
 	butCustom->setUseAlphaChannel(true);
-	return (butCustom);*/
+	return (butCustom);
 
 }
 
@@ -98,22 +98,6 @@ irr::scene::ISceneNode	*graphic::IrrlichtLib::createCube(const vec3df &pos, cons
 		n->setID(id);
 	}
 	return (n);
-}
-
-irr::scene::ISceneNode  *graphic::IrrlichtLib::createBackground()
-{
-    irr::scene::IAnimatedMesh* mesh = _sceneManager->getMesh("../Assets/background_forest.obj");
-    irr::scene::ISceneNode *node = _sceneManager->addAnimatedMeshSceneNode(mesh);
-    if (node) {
-        node->setScale(irr::core::vector3df(_screenSize.x, _screenSize.y, 25.8f));
-        node->setPosition(irr::core::vector3df(10, 30, 0));
-        node->setRotation(irr::core::vector3df(60.f, 0.f, 0.f));
-        //node->setMaterialTexture(0, _driver->getTexture(path.c_str()));
-        node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-        node->setID(42);
-    }
-    return (node);
-
 }
 
 irr::scene::ISceneNode  *graphic::IrrlichtLib::createSphere(const vec3df &pos, const std::string &path, irr::s32 id)

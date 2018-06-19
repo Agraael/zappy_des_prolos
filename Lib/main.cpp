@@ -6,12 +6,12 @@
 #include <thread>
 
 #include "IrrlichtLib.hpp"
+#include "MyEventReciver.hpp"
 #include "GameInterface.hpp"
 
 int main(int ac, char **av)
 {
     graphic::IrrlichtLib *lib = new graphic::IrrlichtLib;
-    lib->createBackground();
     std::string name = av[1];
     graphic::GameInterface gI(lib, name);
     gI.displayGameInterface();
@@ -19,10 +19,16 @@ int main(int ac, char **av)
     pos.x = 0;
     pos.y = 0;
     pos.z = -10;
+    graphic::t_contextRecEvnt context;
+    context.device = lib->getDevice();
+    graphic::MyEventReceiver receiver(context);
+    lib->getDevice()->setEventReceiver(&receiver);
     irr::u32 then = lib->getDevice()->getTimer()->getTime();
     auto element = lib->createSphere({10, 30, 0}, "../Assets/perso.png", 12);
     lib->setCamera(element, pos);
     while (lib->getDevice()->run()) {
+
+        //lib->getReceiver()->onEvent();
        /* const irr::u32 now = lib->getDevice()->getTimer()->getTime();
         const irr::f32 frameDeltaTime = (irr::f32)(now - then) / 1000.f; // Time in seconds
         then = now;

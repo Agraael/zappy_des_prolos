@@ -26,6 +26,23 @@ void graphic::GameInterface::printName()
     }
 }
 
+
+void    graphic::GameInterface::buttonInventary()
+{
+    auto size = _lib->getScreenSize();
+    graphic::infos_t menuStone;
+    menuStone._x = (size.x / 2) - 50;
+    menuStone._y = 10;
+    menuStone._w = (size.x / 2) + 50;
+    menuStone._h = 100;
+    //menuStone._type = 3;
+    menuStone._desc = "get a look to your inventary";
+    menuStone._name = "";
+    menuStone._path = "./../Assets/menuStones.png";
+    _lib->printButton(menuStone);
+}
+
+
 void graphic::GameInterface::printBackTeam()
 {
     int size = 330 + ((_teamName.getVectorLetters()).size() * 25);
@@ -42,6 +59,7 @@ void graphic::GameInterface::printBackTeam()
 
 void graphic::GameInterface::displayGameInterface()
 {
+    buttonInventary();
     printBackTeam();
     printName();
     printLevel(8);
@@ -99,9 +117,7 @@ void    graphic::GameInterface::changeLevel(size_t lvl)
     _lvl._img->remove();
     _lvl._infos._w = 43.5 * lvl;
     _lvl._infos._maxW = 43.5 * lvl;
-    std::cout << "entra qui" << std::endl;
     _lvl._infos._path = changeInformationsPath(lvl, "../Assets/lvl_");
-    std::cout <<  _lvl._infos._path << std::endl;
     _lvl._img = _lib->drawImage(_lvl._infos);
 }
 

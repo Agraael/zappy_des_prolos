@@ -52,7 +52,6 @@ namespace graphic {
 			void			displayAll();
 			void			clearGui() noexcept;
 			void			clearScene() noexcept;
-            irr::scene::ISceneNode  *createBackground();
             void modifyLight(int nbr);
             void setSkinTransparency(irr::s32 alpha, irr::gui::IGUISkin *skin);
             irr::s32 getLight() { return _light; }

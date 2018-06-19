@@ -27,9 +27,11 @@ namespace graphic
         ~GameInterface() = default;
         void printName();
         void printBackTeam();
+        void buttonInventary();
         std::string changeInformationsPath(size_t nbr, const std::string &path);
         void changeLevel(size_t);
         void changeLife(size_t);
+        void printGrass();
         void displayGameInterface();
         void infoBarPlayer();
         void printLevel(size_t);

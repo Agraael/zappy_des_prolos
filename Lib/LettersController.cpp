@@ -8,9 +8,6 @@ graphic::LetterController::LetterController(const std::string &toPrint) : _toPri
 {
     std::transform(_toPrint.begin(), _toPrint.end(), _toPrint.begin(), ::toupper);
     createVectorToPrint();
-    for (auto let : _textureToPrint) {
-        std::cout << "              " << let << std::endl;
-    }
 };
 
 void graphic::LetterController::createVectorToPrint()
