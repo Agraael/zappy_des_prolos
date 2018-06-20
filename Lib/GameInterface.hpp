@@ -8,22 +8,19 @@
 #include "IrrlichtLib.hpp"
 #include "LettersController.hpp"
 
-namespace graphic
-{
-    typedef struct infosPlayer_s
-    {
-       infos_t _infos;
-       irr::gui::IGUIImage	*_img;
+namespace graphic {
+    typedef struct infosPlayer_s {
+        infos_t _infos;
+        irr::gui::IGUIImage *_img;
     } infosPlayer_t;
 
-    class GameInterface
-    {
+    class GameInterface {
         graphic::IrrlichtLib *_lib;
         graphic::LetterController _teamName;
         infosPlayer_t _lvl;
         infosPlayer_t _life;
     public:
-        GameInterface(graphic::IrrlichtLib *const irrlichtLib, std::string const& nameTeam);
+        GameInterface(graphic::IrrlichtLib *const irrlichtLib, std::string const &nameTeam);
         ~GameInterface() = default;
         void printName();
         void printBackTeam();

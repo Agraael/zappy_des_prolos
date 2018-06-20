@@ -26,7 +26,6 @@ void graphic::GameInterface::printName()
     }
 }
 
-
 void    graphic::GameInterface::buttonInventary()
 {
     auto size = _lib->getScreenSize();
@@ -35,7 +34,7 @@ void    graphic::GameInterface::buttonInventary()
     menuStone._y = 10;
     menuStone._w = (size.x / 2) + 50;
     menuStone._h = 100;
-    //menuStone._type = 3;
+    menuStone._type = graphic::OPEN_INVENTARY;
     menuStone._desc = "get a look to your inventary";
     menuStone._name = "";
     menuStone._path = "./../Assets/menuStones.png";

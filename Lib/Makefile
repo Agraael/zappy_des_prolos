@@ -14,7 +14,9 @@ NAME		= grph
 SRCS            =	main.cpp		\
 			        IrrlichtLib.cpp \
 			        LettersController.cpp \
-			        GameInterface.cpp
+			        GameInterface.cpp \
+			        LibEventManager.cpp \
+			        Inventary.cpp \
 
 OBJS            = $(SRCS:.cpp=.o)
 

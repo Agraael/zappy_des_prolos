@@ -6,7 +6,6 @@
 #include <thread>
 
 #include "IrrlichtLib.hpp"
-#include "MyEventReciver.hpp"
 #include "GameInterface.hpp"
 
 int main(int ac, char **av)
@@ -19,10 +18,6 @@ int main(int ac, char **av)
     pos.x = 0;
     pos.y = 0;
     pos.z = -10;
-    graphic::t_contextRecEvnt context;
-    context.device = lib->getDevice();
-    graphic::MyEventReceiver receiver(context);
-    lib->getDevice()->setEventReceiver(&receiver);
     irr::u32 then = lib->getDevice()->getTimer()->getTime();
     auto element = lib->createSphere({10, 30, 0}, "../Assets/perso.png", 12);
     lib->setCamera(element, pos);

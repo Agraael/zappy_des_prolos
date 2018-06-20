@@ -10,7 +10,7 @@
 #include <irrlicht/irrlicht.h>
 #include <string>
 #include <memory>
-#include "MyEventReciver.hpp"
+#include "LibEventManager.hpp"
 
 struct vec3df {
 	double	x;
@@ -35,6 +35,7 @@ namespace graphic {
 		size_t _y;
 		size_t _w;
 		size_t _h;
+		graphic::controllerUser _type;
 		size_t _maxW;
 		size_t _maxH;
 		std::string _path;
@@ -64,9 +65,8 @@ namespace graphic {
 			irr::gui::IGUIButton	*printButton(const infos_t &);
 			void			drawText(size_t, size_t, size_t, std::string const&);
 			irr::gui::IGUIScrollBar	*scrollBarButton(const infos_t &);
-            MyEventReceiver *getReceiver() { return _receiver; }
             void modifyPosElem(irr::scene::ISceneNode  *elem, vec3df pos) { elem->setPosition(irr::core::vector3df(pos.x ,pos.y, pos.z)); }
-			//std::shared_ptr<LibEventManager> const& getEventManager() const noexcept { return _eventManager; }
+			std::shared_ptr<LibEventManager> const& getEventManager() const noexcept { return _eventManager; }
 			vec2d const		&getScreenSize() const noexcept { return _screenSize; }
 			void createListBox(const std::string &name);
 		private:
@@ -76,8 +76,7 @@ namespace graphic {
 			irr::IrrlichtDevice				*_device;
 			irr::gui::IGUIEnvironment			*_guiEnv;
 			std::map<std::string, irr::video::ITexture *>	_mapTexture;
-            MyEventReceiver *_receiver;
-			//std::shared_ptr<graphic::LibEventManager>	_eventManager{nullptr};
+			std::shared_ptr<graphic::LibEventManager>	_eventManager{nullptr};
             irr::s32 _light;
 		    irr::gui::IGUIListBox*    _listBox;
 	};

@@ -4,18 +4,18 @@
 
 #include "IrrlichtLib.hpp"
 
-graphic::IrrlichtLib::IrrlichtLib() : _receiver(new MyEventReceiver)
+graphic::IrrlichtLib::IrrlichtLib()
 {
 	_screenSize = {1080, 720};
-	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(_screenSize.x, _screenSize.y), 16, false, false, false, _receiver);
+	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(_screenSize.x, _screenSize.y), 16, false, false, false, 0);
 	if (!_device)
 		std::cout << "error device" << std::endl;
 	_device->setWindowCaption(L"INDIE DES BESTOS");
 	_driver = _device->getVideoDriver();
 	_sceneManager = _device->getSceneManager();
 	_guiEnv = _device->getGUIEnvironment();
-	//_eventManager = std::make_shared<graphic::LibEventManager>(t_contextRecEvnt{_device, 0, nullptr});
-	//_device->setEventReceiver(_eventManager.get());
+	_eventManager = std::make_shared<graphic::LibEventManager>(t_contextRecEvnt{_device, 0, nullptr});
+	_device->setEventReceiver(_eventManager.get());
 	_light = 255;
 }
 
