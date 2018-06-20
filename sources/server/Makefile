@@ -7,7 +7,7 @@
 
 CC		= gcc
 
-CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -lm
+CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -lm -g3
 CFLAGS		= -I ../../includes/server/
 
 NAME		= ../../zappy_server
