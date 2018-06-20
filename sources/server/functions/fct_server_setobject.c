@@ -8,6 +8,7 @@
 #include "struct.h"
 #include "fcts.h"
 #include <string.h>
+#include <stdlib.h>
 
 
 static const t_printtab stonetab[] = {
@@ -20,32 +21,45 @@ static const t_printtab stonetab[] = {
 
 };
 
-static void pose_it(t_env *e , int stone)
+static void pose_it(t_env *e , int stone, int fd)
 {
-    for (int x = 0; e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]; x++) {
-        if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x] == STONE) {
-            e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x] = stone;
+    char *place;
+    int x = 0;
+        if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] == STONE) {
+            e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] = stone;
+            return;
         }
-    }
+        place = malloc(sizeof(char *) * (strlen(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y]) + 2));
+        while (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]) {
+            place[x] = e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x];
+            x++;
+        }
+	place[x] = stone;
+	place[x + 1] = '\0';
+	e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y] = place;
+
 }
 
 static void verif_if_enought(char * stone, t_env *e, int fd, int sts)
 {
-    if (strcmp("linemate", stone) == 0)
+    if (strcmp("linemate", stone) == 0 &&  e->inventory[fd].stone.linemate != 0)
         e->inventory[fd].stone.linemate =  e->inventory[fd].stone.linemate - 1;
-    else if (strcmp("deraumere", stone) == 0)
+    else if (strcmp("deraumere", stone) == 0 &&  e->inventory[fd].stone.deraumere != 0)
         e->inventory[fd].stone.deraumere =  e->inventory[fd].stone.deraumere - 1;
-    else if (strcmp("sibur", stone ) == 0)
+    else if (strcmp("sibur", stone ) == 0 &&  e->inventory[fd].stone.sibur != 0)
         e->inventory[fd].stone.sibur =  e->inventory[fd].stone.sibur - 1;
-    elseif (strcmp("mendiane", stone) == 0)
+    else if (strcmp("mendiane", stone) == 0 &&  e->inventory[fd].stone.mendiane != 0)
         e->inventory[fd].stone.mendiane =  e->inventory[fd].stone.mendiane - 1;
-    if (strcmp("phiras", stone) == 0)
+    else if (strcmp("phiras", stone) == 0 &&  e->inventory[fd].stone.phiras != 0)
         e->inventory[fd].stone.phiras =  e->inventory[fd].stone.phiras - 1;
-    if (strcmp("thystame", stone) == 0)
+    else if (strcmp("thystame", stone) == 0 &&  e->inventory[fd].stone.thystame != 0)
         e->inventory[fd].stone.thystame =  e->inventory[fd].stone.thystame - 1;
-    else
-        return ;
-    pose_it(e, sts);
+    else {
+        dprintf(fd,"ko\n");
+        return;
+    }
+    pose_it(e, sts, fd);
+    dprintf(fd, "ok\n");
 }
 
 static int set_it(t_env *e, int fd, const char *subtoken)
@@ -69,6 +83,5 @@ int fct_server_setobject(char *cmd_line, int fd, t_env *e)
         return (0);
     }
     set_it (e, fd, subtoken);
-    dprintf(fd, "ok\n");
 	return (0);
 }
