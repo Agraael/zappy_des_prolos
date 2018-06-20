@@ -7,7 +7,7 @@
 
 CC		= gcc
 
-CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -g3
+CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -lm
 CFLAGS		= -I ../../includes/server/
 
 NAME		= ../../zappy_server
@@ -24,6 +24,7 @@ SRCS            =	main.c		\
 			functions/fct_server_look_direction.c \
 			functions/fct_server_teamname.c	\
 			functions/fct_server_forward.c	\
+			functions/fct_server_quit.c	\
 			functions/fct_server_right.c	\
 			functions/fct_server_left.c	\
 			functions/fct_server_look.c	\
