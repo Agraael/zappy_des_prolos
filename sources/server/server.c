@@ -24,7 +24,8 @@ static const t_serv_functions tab[] = {
         {"take object", &fct_server_take, 11},
         {"set object", &fct_server_setobject, 10},
 	{"team-name", &fct_server_teamname, 9},
-	{"incantation", &fct_server_incantation, 11}
+	{"incantation", &fct_server_incantation, 11},
+	{"quit", &fct_server_quit, 4}
 };
 
 static int assign_to_function(t_env *e, int fd, char *buff)
@@ -37,7 +38,7 @@ static int assign_to_function(t_env *e, int fd, char *buff)
 			return (0);
 		}	
 	}
-	for (int i = 0; i != 13; i++) {
+	for (int i = 0; i != 14; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
 			return (tab[i].pts(buff, fd, e));
 		}

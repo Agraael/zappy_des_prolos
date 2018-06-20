@@ -33,6 +33,7 @@ int fct_server_teamname(char *cmdline, int fd, t_env *e);
 int fct_server_incantation(char *cmd_line, int fd, t_env *e);
 int fct_server_forward(char *cmd_line, int fd, t_env *e);
 int fct_server_right(char *cmd_line, int fd, t_env *e);
+int fct_server_quit(char *cmd_line, int fd, t_env *e);
 int fct_server_left(char *cmd_line, int fd, t_env *e);
 int fct_server_look(char *cmd_line, int fd, t_env *e);
 int fct_server_inventory(char *cmd_line, int fd, t_env *e);
