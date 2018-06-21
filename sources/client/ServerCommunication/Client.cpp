@@ -14,6 +14,14 @@
 #include <string.h>
 #include "Client.hpp"
 
+#include <string>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <iostream>
+
+#include <ext/stdio_filebuf.h>
+#include <fstream>
+
 Client::Client()
 {
 }
@@ -59,31 +67,35 @@ int	Client::connectFct(const char *ip, int port)
 
 int	Client::send(int fd, std::string msg)
 {
-	int nbWrited = -1;
-
-	nbWrited = write(fd, msg.c_str(), msg.size());
+	dprintf(fd, "%s\n", msg.c_str());
+	/*nbWrited = write(fd, msg.c_str(), msg.size());
 	if (nbWrited < 0) {
 		std::cerr << "Error : can't send from client to server" << std::endl;
 		close(fd);
 		return (84);
-	}
+		}*/
 	return (0);
 }
 
 std::string	Client::receive(int fd)
 {
-	int nbRead = -1;
-	char *buffer = (char*)malloc(sizeof(char) * 255);
+	char *buff = (char *)malloc(sizeof(char) * 512);
+        int pos_end = read(fd, buff, 1);
 
-	nbRead = read(fd, buffer, 255);
-	if (nbRead == -1) {
-		std::cerr << "Error : can't receive from server to client" << std::endl;
-		return (NULL);
-	}
-	std::cout << buffer << std::endl;
-	std::string msg(buffer);
-	free(buffer);
-	return (msg);
+        if (pos_end > 0) {
+                while (1) {
+                        if (pos_end > 0)
+                                printf("%c", buff[0]);
+                        pos_end = read(fd, buff, 1);
+                        if (buff[0] == '\n')
+                                break;
+                }
+                printf("\n");
+        } else
+		return "";
+	std::string buffer(buff);
+	free(buff);
+	return buffer;
 }
 
 // Completer cette ligne dans add_client : e->fct_write[cs] = client_write;

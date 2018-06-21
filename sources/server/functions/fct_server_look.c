@@ -14,12 +14,13 @@ static const t_printtab stonetab[] = {
         {SIBUR, "sibur"},
         {MENDIANE, "mendiane"},
         {PHIRAS, "phiras"},
+	{FOOD, "food"},
         {THYSTAME, "thystame"}
 };
 
 static void print_stone(int stone, int fd)
 {
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 7; i++) {
 		if (stone == stonetab[i].stone)
 			dprintf(fd, "%s", stonetab[i].print);
 	}
