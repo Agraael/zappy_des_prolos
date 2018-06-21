@@ -7,6 +7,13 @@
 
 namespace graphic
 {
+    template<typename T>
+    struct Vector3d {
+        T       x;
+        T       y;
+        T       z;
+    };
+
   class IGrphGame
   {
   public:

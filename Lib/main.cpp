@@ -28,10 +28,16 @@ int main(int ac, char **av)
     auto element = lib->createSphere({10, 30, 0}, "../Assets/perso.png", 12);
     lib->setCamera(element, pos);*/
     map.display();
+    int i = 0;
     while (lib->getDevice()->run()) {
+        if (i < 4) {
+            player.eventManager("GO_LEFT");
+        }
+        lib->displayAll();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        i++;
         //gI.eventManager();
         //inventary.eventManager(gI.getInventaryIsOpen());
-        lib->displayAll();
         //gI.changeLevel(3);
         //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }

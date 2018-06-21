@@ -32,6 +32,21 @@ void	graphic::IrrlichtLib::displayAll()
 	_driver->endScene();
 }
 
+void        graphic::IrrlichtLib::selectNode(irr::scene::ISceneNode* pNode)
+{
+	/*irr::core::vector3df intersection;
+	irr::core::triangle3df tri;
+	irr::scene::ITriangleSelector* wselector = NULL;
+	if (pNode->isVisible()) {
+		wselector = _sceneManager->createTriangleSelectorFromBoundingBox(pNode);
+		if (_sceneManager->getSceneCollisionManager()->getCollisionPoint(ray, wselector, intersection, tri)) {
+			wselector->drop();
+			return intersection;
+		}
+		wselector->drop();
+	}*/
+}
+
 irr::video::ITexture	*graphic::IrrlichtLib::findTextureOrCreate(const std::string &path)
 {
 	auto it = _mapTexture.find(path);
@@ -100,7 +115,7 @@ irr::scene::ISceneNode	*graphic::IrrlichtLib::createCube(const vec3df &pos, cons
 	return (n);
 }
 
-irr::scene::ISceneNode  *graphic::IrrlichtLib::createSphere(const vec3df &pos, const std::string &path, irr::s32 id)
+irr::scene::ISceneNode  *graphic::IrrlichtLib::createPlayer(const vec3df &pos, const std::string &path, irr::s32 id)
 {
     irr::scene::IAnimatedMesh* mesh = _sceneManager->getMesh("../Assets/stay.b3d");
     irr::scene::ISceneNode *node = _sceneManager->addAnimatedMeshSceneNode(mesh);

@@ -54,10 +54,11 @@ namespace graphic {
 			void			clearGui() noexcept;
 			void			clearScene() noexcept;
             void modifyLight(int nbr);
+            void selectNode(irr::scene::ISceneNode* pNode);
             void setSkinTransparency(irr::s32 alpha, irr::gui::IGUISkin *skin);
             irr::s32 getLight() { return _light; }
 			irr::scene::ISceneNode	*createCube(const vec3df &, const std::string &, irr::s32);
-			irr::scene::ISceneNode	*createSphere(const vec3df &, const std::string &, irr::s32);
+			irr::scene::ISceneNode	*createPlayer(const vec3df &, const std::string &, irr::s32);
 			irr::scene::ISceneNode	*createSphere(const vec3df &, const std::string &, irr::s32, const sphere_t &);
 			void			setCamera(irr::scene::ISceneNode *, vec3df pos);
 			void			setCamera(const vec3df &, const vec3df &t);
