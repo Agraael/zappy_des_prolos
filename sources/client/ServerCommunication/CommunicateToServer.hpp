@@ -9,10 +9,11 @@
 	#define COMMUNICATETOSERVER_HPP_
 
 #include <memory>
+#include <unordered_map>
 #include "Client.hpp"
 #include "ParseArgs.hpp"
 
-namespace	serverSpace {
+namespace	clientSpace {
 
 	enum	tilesType {
 		NOTHING,
@@ -21,7 +22,8 @@ namespace	serverSpace {
 		SIBUR,
 		MENDIANE,
 		PHIRAS,
-		THYSTAME
+		THYSTAME,
+		FOOD
 	};
 
 	class CommunicateToServer {
@@ -32,8 +34,8 @@ namespace	serverSpace {
 			bool					forward();
 			bool					right();
 			bool					left();
-			std::vector<serverSpace::tilesType>	look();
-			std::string				inventory();
+			std::vector<clientSpace::tilesType>	look();
+			std::vector<clientSpace::tilesType>	inventory();
 			bool					broadcastText();
 			int					connectNbr();
 			bool					forkCmd();
@@ -42,6 +44,17 @@ namespace	serverSpace {
 			bool					setObject();
 			bool					incantation();
 		private:
+			const static std::unordered_map<char, serverSpace::tilesType>	_correlationTab = {
+				{"", clientSpace::tilesType::NOTHING},
+				{"", clientSpace::tilesType::LINEMATE},
+				{"", clientSpace::tilesType::DERAUMERE},
+				{"", clientSpace::tilesType::SIBUR},
+				{"", clientSpace::tilesType::MENDIANE},
+				{"", clientSpace::tilesType::PHIRAS},
+				{"", clientSpace::tilesType::THYSTAME},
+				{"", clientSpace::tilesType::FOOD}
+			}
+			std::vector<serverSpace::tilesType>	interpretTab(std::string);
 			std::unique_ptr<Client>		_client;
 			ParseArgs			*_parse;
 			int				_fd;

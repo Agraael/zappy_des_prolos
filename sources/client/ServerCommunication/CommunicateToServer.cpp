@@ -47,6 +47,8 @@ bool	serverSpace::CommunicateToServer::left()
 	return true;
 }
 
+
+
 std::vector<serverSpace::tilesType>	serverSpace::CommunicateToServer::look()
 {
 	_client->send(_fd, "look");
@@ -108,4 +110,11 @@ bool	serverSpace::CommunicateToServer::incantation()
 	_client->send(_fd, "Incantation");
 	_client->receive(_fd);
 	return true;
+}
+
+std::vector<serverSpace::tilesType>	interpretTab(std::string tab)
+{
+	std::vector<serverSpace::tilesType>	tilesTab;
+
+	
 }
