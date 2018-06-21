@@ -16,45 +16,56 @@ static const t_printtab stonetab[] = {
 	    {MENDIANE, "mendiane"},
 	            {PHIRAS, "phiras"},
 	                    {THYSTAME, "thystame"},
-                {THYSTAME, "thystame"},
-
+        {FOOD, "food"},
 };
 
-static char *take_it(int stone, t_env *e, int fd)
+static int take_it(int stone, t_env *e, int fd, int x)
 {
-	 for (int i = 0; i < 6; i++) {
+	 for (int i = 0; i < 7; i++) {
 		 if (stone == stonetab[i].stone) {
+			 e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x] = STONE;
 			 printf("%s\n", stonetab[i].print);
-			 e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][stone] = STONE;
-			 return (stonetab[i].print);
-
+			 return (stonetab[i].stone);
 		 }
 	 }
-	 return (NULL);
+	 return (0);
+}
+
+static void eat_it(t_env *e, int fd)
+{
+    if  (e->inventory[fd].food == 1260)
+        return;
+    else if (e->inventory[fd].food >= 1134)
+        e->inventory[fd].food = 1260;
+    else
+        e->inventory[fd].food += 126;
 }
 
 int fct_server_take(char *cmd_line, int fd, t_env *e)
 {	
 	(void)cmd_line;
+	int stone = 0;
 	if (e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][0] != STONE) {
 		for (int x = 0; e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x]; x++) {
-			if (strncmp("linemate", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 8) == 0)
-				e->inventory[fd].stone.linemate =  e->inventory[fd].stone.linemate + 1;
-			if (strncmp("deraumere", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 9) == 0)
-				e->inventory[fd].stone.deraumere =  e->inventory[fd].stone.deraumere + 1;
-			if (strncmp("sibur", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 5) == 0 )
-				e->inventory[fd].stone.sibur =  e->inventory[fd].stone.sibur + 1;
-			if (strncmp("mendiane", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 8) == 0)
-				e->inventory[fd].stone.mendiane =  e->inventory[fd].stone.mendiane + 1;
-			if (strncmp("phiras", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 6) == 0)
-				e->inventory[fd].stone.phiras =  e->inventory[fd].stone.phiras + 1;
-			if (strncmp("thystane", take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd), 8) == 0)
-				e->inventory[fd].stone.thystame =  e->inventory[fd].stone.thystame + 1;
-
-			dprintf(fd, "%s\n", "ok");
+		    stone = take_it(e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x], e, fd, x);
+		    if (stone == 1)
+                e->inventory[fd].stone.deraumere =  e->inventory[fd].stone.deraumere + 1;
+            if (stone == 2)
+                e->inventory[fd].stone.sibur =  e->inventory[fd].stone.sibur + 1;
+            if (stone == 3)
+                e->inventory[fd].stone.mendiane =  e->inventory[fd].stone.mendiane + 1;
+            if (stone == 4)
+                e->inventory[fd].stone.phiras =  e->inventory[fd].stone.phiras + 1;
+            if (stone == 5)
+                e->inventory[fd].stone.thystame =  e->inventory[fd].stone.thystame + 1;
+            if (stone == 6)
+                eat_it(e, fd);
+            if (stone == 8)
+                e->inventory[fd].stone.linemate =  e->inventory[fd].stone.linemate + 1;
+            dprintf(fd, "%s\n", "ok");
 		}
 	}
 	else
-		dprintf(fd, "%s\n", "ko");
+	    dprintf(fd, "%s\n", "ko");
 	return (0);
 }

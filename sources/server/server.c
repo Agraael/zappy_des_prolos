@@ -73,6 +73,7 @@ static void add_client(t_env *e, int s)
 {
 	int cs;
 	struct sockaddr_in client_sin;
+	//(void)pthread_t thread_timer;
 	socklen_t client_sin_len;
 
 	client_sin_len = sizeof(client_sin);
@@ -84,6 +85,8 @@ static void add_client(t_env *e, int s)
 	e->vision_field[cs] = 1;
 	e->has_team[cs] = -1;
 	e->dir[cs] = LEFT;
+	e->inventory[cs].food = 1260;
+
 }
 
 static void server_read(t_env *e, int fd)
@@ -107,6 +110,7 @@ static void add_server(t_env *e)
 	e->fct_write[s] = NULL;
 	for (int i = 0; e->infos->team_names[i].name; i++)
 		e->infos->team_names[i].players_remaining = e->infos->clients_nb;
+
 }
 
 void create_server(infos_t *infos)
@@ -114,7 +118,8 @@ void create_server(infos_t *infos)
 	t_env e;
 
 	memset(e.fd_type, FD_FREE, MAX_FD);
-	memset(e.inventory, 0, (size_t)MAX_FD * sizeof(stone_t));
+	memset(e.inventory, 0, (size_t)MAX_FD * sizeof(inventory_t));
+
 	e.infos = infos;
 	add_server(&e);
 	loop_server(&e);
