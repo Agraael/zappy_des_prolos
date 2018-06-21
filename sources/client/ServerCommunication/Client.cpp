@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <string.h>
 #include "Client.hpp"
 
 Client::Client()
@@ -54,4 +55,40 @@ int	Client::connectFct(const char *ip, int port)
 		return (84);
 	}
 	return fd;
+}
+
+int	Client::send(int fd, std::string msg)
+{
+	int nbWrited = -1;
+
+	nbWrited = write(fd, msg.c_str(), msg.size());
+	if (nbWrited < 0) {
+		std::cerr << "Error : can't send from client to server" << std::endl;
+		close(fd);
+		return (84);
+	}
+	return (0);
+}
+
+std::string	Client::receive(int fd)
+{
+	int nbRead = -1;
+	char *buffer = (char*)malloc(sizeof(char) * 255);
+
+	nbRead = read(fd, buffer, 255);
+	if (nbRead == -1) {
+		std::cerr << "Error : can't receive from server to client" << std::endl;
+		return (NULL);
+	}
+	std::cout << buffer << std::endl;
+	std::string msg(buffer);
+	free(buffer);
+	return (msg);
+}
+
+// Completer cette ligne dans add_client : e->fct_write[cs] = client_write;
+
+void client_write(int fd, char *msg)
+{
+	send(fd, msg, strlen(msg), 0);
 }
