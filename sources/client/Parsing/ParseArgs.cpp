@@ -8,7 +8,7 @@
 #include "ParseArgs.hpp"
 #include "help.hpp"
 
-ParseArgs::ParseArgs(char **av) : _name("localhost"), _ip(""), _port(0), _i(0)
+ParseArgs::ParseArgs(char **av) : _name(""), _ip("127.0.0.1"), _port(0), _i(0)
 {
 	for (std::size_t i = 0; av[i] != nullptr; ++i)
 		_av.push_back(av[i]);
@@ -40,6 +40,10 @@ void	ParseArgs::setName()
 
 	if (_av[_i + 1] == "")
 		return;	
+	else if (_name != "") {
+		_name = "";
+		return;
+	}
 	_name = _av[_i + 1];
 	if (_av[_i + 2] == "")
 		return;
@@ -59,10 +63,6 @@ void	ParseArgs::setIp()
 
 	if (_av[_i + 1] == "")
 		return;
-	else if (_ip != "") {
-		_ip = "";
-		return;
-	}
 	_ip = _av[_i + 1];
 	if (_av[_i + 2] == "")
 		return;
@@ -97,7 +97,7 @@ void	ParseArgs::setPort()
 
 int	ParseArgs::checkArgs()
 {
-	if (_port == 0 || _ip == "")
+	if (_port == 0 || _name == "")
 		return 84;
 	return 0;
 }
