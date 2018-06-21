@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <fcntl.h>
 #include "CommunicateToServer.hpp"
 
 serverSpace::CommunicateToServer::CommunicateToServer(ParseArgs *parse) : _parse(parse)
@@ -15,10 +16,15 @@ serverSpace::CommunicateToServer::CommunicateToServer(ParseArgs *parse) : _parse
 
 int	serverSpace::CommunicateToServer::connectToServer()
 {
+	int flag;
+
 	_fd = _client->connectFct(_parse->getIp().c_str(), _parse->getPort());
 
 	if (_fd == 84)
 		return 84;
+	flag = fcntl(_fd, F_GETFL, 0);
+	flag |= O_NONBLOCK;
+        fcntl(_fd, F_SETFL, flag);
 	_client->send(_fd, "team-name " + _parse->getName());
 	_client->receive(_fd);
 	forward();
