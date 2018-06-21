@@ -7,41 +7,33 @@
 
 #include "IrrlichtLib.hpp"
 #include "GameInterface.hpp"
+#include "Inventary.hpp"
+#include "GameMap.hpp"
+#include "Player.hpp"
 
 int main(int ac, char **av)
 {
     graphic::IrrlichtLib *lib = new graphic::IrrlichtLib;
     std::string name = av[1];
     graphic::GameInterface gI(lib, name);
-    gI.displayGameInterface();
+    graphic::GameMap map(lib);
+    graphic::Player player(lib);
+    /*graphic::Inventary inventary(lib);
+    gI.display();
     vec3df pos;
     pos.x = 0;
     pos.y = 0;
     pos.z = -10;
     irr::u32 then = lib->getDevice()->getTimer()->getTime();
     auto element = lib->createSphere({10, 30, 0}, "../Assets/perso.png", 12);
-    lib->setCamera(element, pos);
+    lib->setCamera(element, pos);*/
+    map.display();
     while (lib->getDevice()->run()) {
-
-        //lib->getReceiver()->onEvent();
-       /* const irr::u32 now = lib->getDevice()->getTimer()->getTime();
-        const irr::f32 frameDeltaTime = (irr::f32)(now - then) / 1000.f; // Time in seconds
-        then = now;
-        if(lib->getReceiver()->IsKeyDown(irr::KEY_LEFT)) {
-            pos.y += 1.f;// * frameDeltaTime;
-            //pos.x = 0.f;
-        }
-        else if(lib->getReceiver()->IsKeyDown(irr::KEY_RIGHT))
-            pos.y -= 1.f;
-        if(lib->getReceiver()->IsKeyDown(irr::KEY_DOWN))
-            pos.y += 10.f;
-        else if(lib->getReceiver()->IsKeyDown(irr::KEY_UP))
-            pos.z -= 70.f * frameDeltaTime;
-        lib->setCamera(element, pos);
-        //lib->modifyPosElem(element, pos);*/
+        //gI.eventManager();
+        //inventary.eventManager(gI.getInventaryIsOpen());
         lib->displayAll();
-        gI.changeLevel(3);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        //gI.changeLevel(3);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
 

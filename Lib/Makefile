@@ -17,6 +17,8 @@ SRCS            =	main.cpp		\
 			        GameInterface.cpp \
 			        LibEventManager.cpp \
 			        Inventary.cpp \
+			        GameMap.cpp \
+			        Player.cpp \
 
 OBJS            = $(SRCS:.cpp=.o)
 

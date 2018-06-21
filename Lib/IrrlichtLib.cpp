@@ -61,7 +61,7 @@ irr::gui::IGUIButton	*graphic::IrrlichtLib::printButton(const infos_t &infos)
 	const wchar_t *nameToPrint = wideStr.c_str();
 	std::wstring wideStrDesc = std::wstring(infos._desc.begin(), infos._desc.end());
 	const wchar_t *descriptionToPrint = wideStrDesc.c_str();
-	irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, 2, nameToPrint, descriptionToPrint);
+	irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
 	butCustom->setDrawBorder(0);
 	butCustom->setImage(_driver->getTexture(infos._path.c_str()));
 	butCustom->setScaleImage(true);
@@ -105,7 +105,7 @@ irr::scene::ISceneNode  *graphic::IrrlichtLib::createSphere(const vec3df &pos, c
     irr::scene::IAnimatedMesh* mesh = _sceneManager->getMesh("../Assets/stay.b3d");
     irr::scene::ISceneNode *node = _sceneManager->addAnimatedMeshSceneNode(mesh);
     if (node) {
-        node->setScale(irr::core::vector3df(55.8f, 55.8f, 25.8f));
+        node->setScale(irr::core::vector3df(1.8f, 1.8f, 1.8f));
         node->setPosition(irr::core::vector3df(pos.x ,pos.y, pos.z));
         node->setRotation(irr::core::vector3df(60.f, 0.f, 0.f));
         node->setMaterialTexture(0, _driver->getTexture(path.c_str()));

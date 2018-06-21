@@ -4,7 +4,7 @@
 
 #include "GameInterface.hpp"
 
-graphic::GameInterface::GameInterface(graphic::IrrlichtLib *const lib, std::string const& nameTeam) : _lib(lib), _teamName(nameTeam)
+graphic::GameInterface::GameInterface(graphic::IrrlichtLib *const lib, std::string const& nameTeam) : _lib(lib), _teamName(nameTeam), _inventaryIsOpen(false)
 {
 }
 
@@ -56,13 +56,21 @@ void graphic::GameInterface::printBackTeam()
     _lib->drawImage(backTeam);
 }
 
-void graphic::GameInterface::displayGameInterface()
+void graphic::GameInterface::display()
 {
     buttonInventary();
     printBackTeam();
     printName();
     printLevel(8);
     printLife(10);
+}
+
+void    graphic::GameInterface::eventManager()
+{
+    if (_lib->getEventManager()->IsButtonClicked(graphic::controllerUser::OPEN_INVENTARY) && !_inventaryIsOpen) {
+        _inventaryIsOpen = true;
+        std::cout << "open" << std::endl;
+    }
 }
 
 std::string graphic::GameInterface::changeInformationsPath(size_t nbr, const std::string &path)
