@@ -5,116 +5,214 @@
 ** source
 */
 
+#include <algorithm>
 #include <iostream>
+#include <fcntl.h>
 #include "CommunicateToServer.hpp"
 
-serverSpace::CommunicateToServer::CommunicateToServer(ParseArgs *parse) : _parse(parse)
+clientSpace::CommunicateToServer::CommunicateToServer(ParseArgs *parse) : _parse(parse)
 {
 	_client = std::make_unique<Client>();
 }
 
-int	serverSpace::CommunicateToServer::connectToServer()
+int	clientSpace::CommunicateToServer::connectToServer()
 {
+	int flag;
+
 	_fd = _client->connectFct(_parse->getIp().c_str(), _parse->getPort());
 
 	if (_fd == 84)
 		return 84;
-	_client->send(_fd, "team-name " + _parse->getName());
-	_client->receive(_fd);
-	forward();
-	right();	
+	flag = fcntl(_fd, F_GETFL, 0);
+	flag |= O_NONBLOCK;
+        fcntl(_fd, F_SETFL, flag);
+	if (teamName() == std::make_pair(0, 0))
+		return 84;
 	return 0;
 }
 
-bool	serverSpace::CommunicateToServer::forward()
+int	clientSpace::CommunicateToServer::checkNbrPlayer(std::string str)
 {
+	std::size_t	pos = str.find(" ");
+
+	str.erase(str.begin() + pos, str.end());
+	return std::stoi(str);
+}
+
+std::pair<int, int>	clientSpace::CommunicateToServer::teamName()
+{
+	std::string	buffer = "";
+
+	_client->send(_fd, "team-name " + _parse->getName());
+	while ((buffer = _client->receive(_fd)) == "");
+	if (checkNbrPlayer(buffer) < 0)
+		return std::make_pair(0, 0);
+	while ((buffer = _client->receive(_fd)) == "");
+	return (findMapSize(buffer));
+}
+
+std::pair<int, int>	clientSpace::CommunicateToServer::findMapSize(std::string str)
+{
+	int	x = 0;
+	int	y = 0;
+	std::string	temp = 
+	std::size_t	pos1 = str.find(" ");
+
+
+	std::size_t	pos2 = str.find(" ");
+
+}
+
+bool	clientSpace::CommunicateToServer::forward()
+{
+	std::string	buffer = "";
+
 	_client->send(_fd, "forward");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::right()
+bool	clientSpace::CommunicateToServer::right()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "right");
-	_client->receive(_fd);
-	return false;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::left()
+bool	clientSpace::CommunicateToServer::left()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "left");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-
-
-std::vector<serverSpace::tilesType>	serverSpace::CommunicateToServer::look()
+std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::look()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "look");
-	_client->receive(_fd);
-	return {};
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretTab(buffer);
 }
 
-std::string	serverSpace::CommunicateToServer::inventory()
+std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::inventory()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "inventory");
-	_client->receive(_fd);
-	return "";
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretTab(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::broadcastText()
+bool	clientSpace::CommunicateToServer::broadcastText()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Broadcast text");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-int	serverSpace::CommunicateToServer::connectNbr()
+int	clientSpace::CommunicateToServer::connectNbr()
 {
 	_client->send(_fd, "Connect_nbr");
 	_client->receive(_fd);
 	return 1;
 }
 
-bool	serverSpace::CommunicateToServer::forkCmd()
+bool	clientSpace::CommunicateToServer::forkCmd()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Fork");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::eject()
+bool	clientSpace::CommunicateToServer::eject()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Eject");
-	_client->receive(_fd);
-	return false;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::takeObject()
+bool	clientSpace::CommunicateToServer::takeObject()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Take object");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::setObject()
+bool	clientSpace::CommunicateToServer::setObject()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Set object");
-	_client->receive(_fd);
-	return false;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-bool	serverSpace::CommunicateToServer::incantation()
+bool	clientSpace::CommunicateToServer::incantation()
 {
+	std::string	buffer = "";
+
 	_client->send(_fd, "Incantation");
-	_client->receive(_fd);
-	return true;
+	while ((buffer += _client->receive(_fd)) == "");
+	std::cout << buffer << std::endl;
+	return interpretString(buffer);
 }
 
-std::vector<serverSpace::tilesType>	interpretTab(std::string tab)
+const std::vector<std::string> clientSpace::CommunicateToServer::explode(const std::string& s, const char& c)
 {
-	std::vector<serverSpace::tilesType>	tilesTab;
-
+	std::string buff{""};
+	std::vector<std::string> v;
 	
+	for(auto n:s)
+	{
+		if(n != c) buff+=n; else
+		if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+	}
+	if (buff != "") v.push_back(buff);
+	
+	return v;
+}
+
+std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::interpretTab(std::string tab)
+{
+	std::vector<std::string> 		vec{explode(tab, ',')};
+	std::vector<clientSpace::tilesType>	tilesTab;
+
+	for (auto &n : vec)
+		n.erase(std::remove(n.begin(), n.end(), ' '), n.end());
+	for (auto &n : vec) {
+		for (auto elem : _correlationTab) {
+			if (n == elem.first)
+				tilesTab.push_back(elem.second);
+		}
+	}
+}
+
+bool	clientSpace::CommunicateToServer::interpretString(std::string str)
+{
+	if (str.find("ok") < str.size())
+		return (true);
+	else if (str.find("ko") < str.size())
+		return (true);
 }
