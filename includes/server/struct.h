@@ -34,6 +34,7 @@
 #define UP 2
 #define DOWN 3
 
+
 typedef struct s_elevation {
 	int level;
 	size_t linemate;
@@ -93,11 +94,11 @@ typedef struct	inventory_s {
 
 typedef struct s_env
 {
-        char fd_type[MAX_FD];
-        fct fct_read[MAX_FD];
-        fct fct_write[MAX_FD];
+	char fd_type[MAX_FD];
+	fct fct_read[MAX_FD];
+	fct fct_write[MAX_FD];
 	int has_team[MAX_FD];
-        infos_t *infos;
+	infos_t *infos;
 	int dir[MAX_FD];
 	int vision_field[MAX_FD];
 	vec_t pos_ia[MAX_FD];
@@ -108,6 +109,7 @@ typedef struct s_serv_functions {
         char *str;
         int (*pts)(char *, int, t_env *);
         int length;
+        float time;
 } t_serv_functions;
 	
 //fin
@@ -122,4 +124,9 @@ typedef	struct	s_functions {
 	int	(*func)(char **, size_t, infos_t **);
 }		t_functions;
 
+typedef struct thread_s {
+    t_env *e;
+    int fd;
+    float time;
+}thread_t;
 #endif /* !STRUCT_H_ */

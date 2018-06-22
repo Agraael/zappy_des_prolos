@@ -24,7 +24,6 @@ static int take_it(int stone, t_env *e, int fd, int x)
 	 for (int i = 0; i < 7; i++) {
 		 if (stone == stonetab[i].stone) {
 			 e->infos->map[e->pos_ia[fd].x][e->pos_ia[fd].y][x] = STONE;
-			 printf("%s\n", stonetab[i].print);
 			 return (stonetab[i].stone);
 		 }
 	 }
