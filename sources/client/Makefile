@@ -12,9 +12,9 @@ CXXFLAGS        +=	-std=c++14 -I ../../includes/client/ -I ServerCommunication/ 
 
 NAME            =       ../../zappy_ai
 
-SRCS            =       main.cpp				\
-			ServerCommunication/ConnectToServer.cpp	\
-			ServerCommunication/Client.cpp		\
+SRCS            =       main.cpp					\
+			ServerCommunication/CommunicateToServer.cpp	\
+			ServerCommunication/Client.cpp			\
 			Parsing/ParseArgs.cpp
 
 OBJS            =       $(SRCS:.cpp=.o)

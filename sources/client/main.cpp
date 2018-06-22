@@ -7,16 +7,16 @@
 
 #include <iostream>
 #include "ParseArgs.hpp"
-#include "ConnectToServer.hpp"
+#include "CommunicateToServer.hpp"
 
 int	main(int, char **av)
 {
-	ParseArgs	parse(av);
-	ConnectToServer	client(parse);
+	ParseArgs	*parse = new ParseArgs(av);
+	serverSpace::CommunicateToServer	client(parse);
 
-	parse.Parser();
-	if (parse.checkArgs() == 84)
+	parse->Parser();
+	if (parse->checkArgs() == 84)
 		return (84);
-	client.connectServer();
+	client.connectToServer();
 	return 0;
 }
