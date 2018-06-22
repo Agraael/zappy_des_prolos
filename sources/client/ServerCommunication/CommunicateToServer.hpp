@@ -31,20 +31,21 @@ namespace	clientSpace {
 		public:
 			CommunicateToServer(ParseArgs *);
 			~CommunicateToServer() {};
-			int					connectToServer();
-			bool					forward();
-			bool					right();
-			bool					left();
-			std::vector<clientSpace::tilesType>	look();
-			std::vector<clientSpace::tilesType>	inventory();
-			bool					broadcastText();
-			int					connectNbr();
-			bool					forkCmd();
-			bool					eject();
-			bool					takeObject();
-			bool					setObject();
-			bool					incantation();
-			std::pair<int, int>			teamName();			
+			int							connectToServer();
+			bool							forward();
+			bool							right();
+			bool							left();
+			std::vector<std::vector<clientSpace::tilesType>>	look();
+			std::vector<int>					inventory();
+			bool							broadcastText();
+			int							connectNbr();
+			bool							forkCmd();
+			bool							eject();
+			bool							takeObject();
+			bool							setObject();
+			bool							incantation();
+			int							teamName();
+			std::pair<int, int>					getSize() { return _mapSize; };
 		private:
 			const std::unordered_map<std::string, clientSpace::tilesType>	_correlationTab = {
 				{"", clientSpace::tilesType::NOTHING},
@@ -54,16 +55,20 @@ namespace	clientSpace {
 				{"mendiane", clientSpace::tilesType::MENDIANE},
 				{"phiras", clientSpace::tilesType::PHIRAS},
 				{"thystane", clientSpace::tilesType::THYSTAME},
-				{"food", clientSpace::tilesType::FOOD}
+				{"food", clientSpace::tilesType::FOOD},
+				{"player", clientSpace::tilesType::PLAYER}
 			};
-			std::pair<int, int>			findMapSize(std::string str)
-			int					checkNbrPlayer(std::string);
-			const std::vector<std::string>		explode(const std::string& s, const char& c);
-			std::vector<clientSpace::tilesType>	interpretTab(std::string);
-			bool					interpretString(std::string str);
-			std::unique_ptr<Client>		_client;
-			ParseArgs			*_parse;
-			int				_fd;
+			std::vector<clientSpace::tilesType>			convertTab(std::vector<std::string>);
+			void							findMapSize(std::string str);
+			int							checkNbrPlayer(std::string);
+			const std::vector<std::string>				explode(const std::string& s, const char& c);
+			std::vector<std::vector<clientSpace::tilesType>>	interpretTabLook(std::string);
+			std::vector<int>					interpretTabInventory(std::string);
+			bool							interpretString(std::string str);
+			std::unique_ptr<Client>					_client;
+			ParseArgs						*_parse;
+			int							_fd;
+			std::pair<int, int>					_mapSize;
 	};
 }
 

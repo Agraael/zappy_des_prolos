@@ -26,8 +26,10 @@ int	clientSpace::CommunicateToServer::connectToServer()
 	flag = fcntl(_fd, F_GETFL, 0);
 	flag |= O_NONBLOCK;
         fcntl(_fd, F_SETFL, flag);
-	if (teamName() == std::make_pair(0, 0))
+	if (teamName() == 84)
 		return 84;
+	look();
+	inventory();
 	return 0;
 }
 
@@ -35,32 +37,42 @@ int	clientSpace::CommunicateToServer::checkNbrPlayer(std::string str)
 {
 	std::size_t	pos = str.find(" ");
 
+	if (str == "ko")
+		return (-1);
 	str.erase(str.begin() + pos, str.end());
+	if (str == "team" || str == "ko")
+		return (-1);
 	return std::stoi(str);
 }
 
-std::pair<int, int>	clientSpace::CommunicateToServer::teamName()
+int	clientSpace::CommunicateToServer::teamName()
 {
 	std::string	buffer = "";
 
 	_client->send(_fd, "team-name " + _parse->getName());
 	while ((buffer = _client->receive(_fd)) == "");
 	if (checkNbrPlayer(buffer) < 0)
-		return std::make_pair(0, 0);
+		return 84;
 	while ((buffer = _client->receive(_fd)) == "");
-	return (findMapSize(buffer));
+	findMapSize(buffer);
+	return (0);
 }
 
-std::pair<int, int>	clientSpace::CommunicateToServer::findMapSize(std::string str)
+void	clientSpace::CommunicateToServer::findMapSize(std::string str)
 {
 	int	x = 0;
 	int	y = 0;
-	std::string	temp = 
+	std::string	temp = str;
 	std::size_t	pos1 = str.find(" ");
+	std::size_t	pos2;
 
-
-	std::size_t	pos2 = str.find(" ");
-
+	temp.erase(temp.begin() + pos1, temp.end());
+	x =  std::stoi(temp);
+	str = &str[pos1];
+	pos2 = str.find(" ");
+	str.erase(str.begin() + pos1 + pos2 + 1, str.end());
+	y =  std::stoi(str);
+	_mapSize = std::make_pair(x, y);
 }
 
 bool	clientSpace::CommunicateToServer::forward()
@@ -78,7 +90,6 @@ bool	clientSpace::CommunicateToServer::right()
 
 	_client->send(_fd, "right");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -88,28 +99,25 @@ bool	clientSpace::CommunicateToServer::left()
 
 	_client->send(_fd, "left");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
-std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::look()
+std::vector<std::vector<clientSpace::tilesType>>	clientSpace::CommunicateToServer::look()
 {
 	std::string	buffer = "";
 
 	_client->send(_fd, "look");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
-	return interpretTab(buffer);
+	return {interpretTabLook(buffer)};
 }
 
-std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::inventory()
+std::vector<int>	clientSpace::CommunicateToServer::inventory()
 {
 	std::string	buffer = "";
 
 	_client->send(_fd, "inventory");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
-	return interpretTab(buffer);
+	return interpretTabInventory(buffer);
 }
 
 bool	clientSpace::CommunicateToServer::broadcastText()
@@ -118,7 +126,6 @@ bool	clientSpace::CommunicateToServer::broadcastText()
 
 	_client->send(_fd, "Broadcast text");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -135,7 +142,6 @@ bool	clientSpace::CommunicateToServer::forkCmd()
 
 	_client->send(_fd, "Fork");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -145,7 +151,6 @@ bool	clientSpace::CommunicateToServer::eject()
 
 	_client->send(_fd, "Eject");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -155,7 +160,6 @@ bool	clientSpace::CommunicateToServer::takeObject()
 
 	_client->send(_fd, "Take object");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -165,7 +169,6 @@ bool	clientSpace::CommunicateToServer::setObject()
 
 	_client->send(_fd, "Set object");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -175,7 +178,6 @@ bool	clientSpace::CommunicateToServer::incantation()
 
 	_client->send(_fd, "Incantation");
 	while ((buffer += _client->receive(_fd)) == "");
-	std::cout << buffer << std::endl;
 	return interpretString(buffer);
 }
 
@@ -184,29 +186,64 @@ const std::vector<std::string> clientSpace::CommunicateToServer::explode(const s
 	std::string buff{""};
 	std::vector<std::string> v;
 	
-	for(auto n:s)
-	{
-		if(n != c) buff+=n; else
-		if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+	for(auto n:s) {
+		if (n != c)
+			buff+=n;
+		else {
+			v.push_back(buff);
+			buff = "";
+		}
 	}
-	if (buff != "") v.push_back(buff);
+	if (buff != "") {
+		v.push_back(buff);
+	}
 	
 	return v;
 }
 
-std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::interpretTab(std::string tab)
+std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::convertTab(std::vector<std::string> tab)
 {
-	std::vector<std::string> 		vec{explode(tab, ',')};
 	std::vector<clientSpace::tilesType>	tilesTab;
 
-	for (auto &n : vec)
-		n.erase(std::remove(n.begin(), n.end(), ' '), n.end());
-	for (auto &n : vec) {
-		for (auto elem : _correlationTab) {
-			if (n == elem.first)
-				tilesTab.push_back(elem.second);
+	for (auto elem : tab) {
+		for (auto tile : _correlationTab) {
+			if (elem == tile.first)
+				tilesTab.push_back(tile.second);
 		}
 	}
+	return tilesTab;
+}
+
+std::vector<int>	clientSpace::CommunicateToServer::interpretTabInventory(std::string tab)
+{
+	tab.erase(std::remove(tab.begin(), tab.end(), '['), tab.end());
+	tab.erase(std::remove(tab.begin(), tab.end(), ']'), tab.end());
+	std::vector<std::string>	v{explode(tab, ',')};
+	std::vector<int>		intsTab;
+	std::size_t	pos;
+
+	for (auto n:v) {
+		pos = n.find(" ");
+		n.erase(n.begin(), n.begin() + pos + 1);
+		intsTab.push_back(std::stoi(n));
+	}
+	return intsTab;
+}
+
+std::vector<std::vector<clientSpace::tilesType>>	clientSpace::CommunicateToServer::interpretTabLook(std::string tab)
+{
+	tab.erase(std::remove(tab.begin(), tab.end(), '['), tab.end());
+	tab.erase(std::remove(tab.begin(), tab.end(), ']'), tab.end());	
+	std::vector<std::string>				v{explode(tab, ',')};
+	std::vector<std::vector<clientSpace::tilesType>>	tilesTab;
+
+	for (auto n:v) {
+		std::vector<std::string>	tilesVec{explode(n, ' ')};
+		if (n == "")
+			tilesVec = {""};
+		tilesTab.push_back(convertTab(tilesVec));
+	}
+	return tilesTab;
 }
 
 bool	clientSpace::CommunicateToServer::interpretString(std::string str)
