@@ -12,7 +12,7 @@
 int	main(int, char **av)
 {
 	ParseArgs	*parse = new ParseArgs(av);
-	serverSpace::CommunicateToServer	client(parse);
+	clientSpace::CommunicateToServer	client(parse);
 
 	parse->Parser();
 	if (parse->checkArgs() == 84)

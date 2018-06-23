@@ -80,24 +80,23 @@ int	Client::send(int fd, std::string msg)
 std::string	Client::receive(int fd)
 {
 	char *buff = (char *)malloc(sizeof(char) * 512);
-        int pos_end = read(fd, buff, 1);
+	std::string buffer;
+	int pos_end = read(fd, buff, 1);
 
-        if (pos_end > 0) {
-                while (1) {
+	if (pos_end > 0) {
+		while (1) {
                         if (pos_end > 0)
-                                printf("%c", buff[0]);
-                        pos_end = read(fd, buff, 1);
-                        if (buff[0] == '\n')
-                                break;
-                }
+				buffer += buff[0];
+			pos_end = read(fd, buff, 1);
+			if (buff[0] == '\n')
+				break;
+		}
                 printf("\n");
-        } else
-		return "";
-	std::string buffer(buff);
+	} else
+              	return "";
 	free(buff);
 	return buffer;
 }
-
 // Completer cette ligne dans add_client : e->fct_write[cs] = client_write;
 
 void client_write(int fd, char *msg)

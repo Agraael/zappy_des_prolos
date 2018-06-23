@@ -6,11 +6,16 @@
 */
 
 #include "struct.h"
+#include "fcts.h"
 #include <string.h>
 #include <stdlib.h>
 
 static t_infoteam add_teammember(int i, int fd, t_env *e)
 {
+	if (e->infos->team_names[i].players_remaining <= 0) {
+		dprintf(fd, "team full, exiting\n");
+		return (e->infos->team_names[i]);
+	}
 	e->infos->team_names[i].players_remaining -= 1;
 	e->has_team[fd] = i;
 	dprintf(fd, "%d (players left in team)\n", e->infos->team_names[i].players_remaining);
@@ -40,6 +45,8 @@ int fct_server_teamname(char *cmd_line, int fd, t_env *e)
 		if (strcmp(e->infos->team_names[i].name, cmd_line) == 0 ||
 		    (is_num(cmd_line) == 0 && i == atoi(cmd_line))) {
 			e->infos->team_names[i] = add_teammember(i, fd, e);
+			if (e->infos->team_names[i].players_remaining <= 0)
+				return (fct_server_quit(cmd_line, fd, e));
 			is_found++;
 		}
 	}
