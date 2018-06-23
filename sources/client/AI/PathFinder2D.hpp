@@ -50,6 +50,9 @@ namespace AI
 		std::vector<AI::IGraph::Coord2D> const& randomPath(IGraph::Coord2D const& start, unsigned int stepNb, Direction originDirection = Direction::NONE);
 		std::shared_ptr<IGraph> const& getGraph() const;
 		void setGraph(std::shared_ptr<IGraph> const& graph);
+
+		static AI::PathFinder2D::Direction directionRotate90(AI::PathFinder2D::Direction direc, bool right);
+		static AI::PathFinder2D::Direction directionRotate180(AI::PathFinder2D::Direction direc);
 	private:
 		std::shared_ptr<IGraph> _graph{nullptr};
 		IGraph::NodePtr _start{nullptr};

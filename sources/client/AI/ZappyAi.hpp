@@ -33,8 +33,11 @@ namespace AI
 		std::map<ZappyElement, size_t> const& getInventory() const;
 
 		enum class MoveAction {
-			MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, TURN_BACK
+			MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, TURN_BACK, DO_NOTHING
 		};
+
+		void dump();
+		void run(bool testing);
 
 	private:
 		clientSpace::CommunicateToServer& _comm;
@@ -43,15 +46,27 @@ namespace AI
 		DecisionTree _decisionTree;
 		PathFinder2D::Direction _orientation = PathFinder2D::Direction::NORTH;
 		IGraph::Coord2D _postion {0,0};
+		IGraph::Coord2D _postionOld {0,0};
 		size_t _level {1};
 		std::map<ZappyElement, size_t> _inventory {};
 		std::queue<MoveAction> _actionQueue {};
+		std::queue<IGraph::Coord2D> _pathQueue {};
+		std::vector<IGraph::Coord2D> _pathPos {};
+
+		void decisionTreeLvl1();
 
 		void setLevel1Decisions();
-		void translatePathToAction(std::vector<IGraph::Coord2D> path);
+		void translatePathToAction(std::vector<IGraph::Coord2D> const& path);
+		void pathToQueue(std::vector<IGraph::Coord2D> const& path);
+
+		bool moveForward();
+		bool turnLeft();
+		bool turnRight();
+		bool turnBack();
+		bool look();
 
 	public:
-		/// ---------------- decisnion functor
+		/// ---------------- decision functor ------------------------
 		class DecisionFunctor {
 		public:
 			explicit DecisionFunctor(ZappyAi& ai) : _ai(ai){};
@@ -61,14 +76,24 @@ namespace AI
 			ZappyAi& _ai;
 		};
 
-		class ActionIsActionQueue : public DecisionFunctor {
+		class FunctorIsActionQueue : public DecisionFunctor {
 		public:
-			explicit ActionIsActionQueue(ZappyAi& ai) : DecisionFunctor(ai){};
+			explicit FunctorIsActionQueue(ZappyAi& ai) : DecisionFunctor(ai){};
 			bool operator() () final;
 		};
-		class ActionMakeRandomPath : public DecisionFunctor {
+		class FunctorMakeRandomPath : public DecisionFunctor {
 		public:
-			explicit ActionMakeRandomPath(ZappyAi& ai) : DecisionFunctor(ai){};
+			explicit FunctorMakeRandomPath(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;
+		};
+		class FunctorDoPathAction : public DecisionFunctor {
+		public:
+			explicit FunctorDoPathAction(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;
+		};
+		class FunctorLook : public DecisionFunctor {
+		public:
+			explicit FunctorLook(ZappyAi& ai) : DecisionFunctor(ai){};
 			bool operator() () final;
 		};
 	};

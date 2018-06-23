@@ -167,7 +167,7 @@ void AI::PathFinder2D::setGraph(std::shared_ptr<AI::IGraph> const& graph)
 	_graph = graph;
 }
 
-static inline AI::PathFinder2D::Direction directionRotate90(AI::PathFinder2D::Direction direc, bool right) {
+AI::PathFinder2D::Direction AI::PathFinder2D::directionRotate90(AI::PathFinder2D::Direction direc, bool right) {
 	if (direc == AI::PathFinder2D::Direction::NORTH)
 		return (right) ? (AI::PathFinder2D::Direction::EAST): (AI::PathFinder2D::Direction::WEST);
 	if (direc == AI::PathFinder2D::Direction::SOUTH)
@@ -179,7 +179,7 @@ static inline AI::PathFinder2D::Direction directionRotate90(AI::PathFinder2D::Di
 	return AI::PathFinder2D::Direction::NONE;
 }
 
-static inline AI::PathFinder2D::Direction directionRotate180(AI::PathFinder2D::Direction direc) {
+AI::PathFinder2D::Direction AI::PathFinder2D::directionRotate180(AI::PathFinder2D::Direction direc) {
 	if (direc == AI::PathFinder2D::Direction::NORTH)
 		return AI::PathFinder2D::Direction::SOUTH;
 	if (direc == AI::PathFinder2D::Direction::SOUTH)
