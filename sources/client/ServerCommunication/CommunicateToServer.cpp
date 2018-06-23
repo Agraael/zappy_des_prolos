@@ -13,6 +13,12 @@
 clientSpace::CommunicateToServer::CommunicateToServer(ParseArgs *parse) : _parse(parse)
 {
 	_client = std::make_unique<Client>();
+	_vec.push_back(std::make_pair(clientSpace::tilesType::LINEMATE, 0));
+	_vec.push_back(std::make_pair(clientSpace::tilesType::DERAUMERE, 0));
+	_vec.push_back(std::make_pair(clientSpace::tilesType::SIBUR, 0));
+	_vec.push_back(std::make_pair(clientSpace::tilesType::MENDIANE, 0));
+	_vec.push_back(std::make_pair(clientSpace::tilesType::PHIRAS, 0));
+	_vec.push_back(std::make_pair(clientSpace::tilesType::THYSTAME, 0));	
 }
 
 int	clientSpace::CommunicateToServer::connectToServer()
@@ -20,7 +26,6 @@ int	clientSpace::CommunicateToServer::connectToServer()
 	int flag;
 
 	_fd = _client->connectFct(_parse->getIp().c_str(), _parse->getPort());
-
 	if (_fd == 84)
 		return 84;
 	flag = fcntl(_fd, F_GETFL, 0);
@@ -28,8 +33,7 @@ int	clientSpace::CommunicateToServer::connectToServer()
         fcntl(_fd, F_SETFL, flag);
 	if (teamName() == 84)
 		return 84;
-	look();
-	inventory();
+	incantation();
 	return 0;
 }
 
@@ -60,8 +64,8 @@ int	clientSpace::CommunicateToServer::teamName()
 
 void	clientSpace::CommunicateToServer::findMapSize(std::string str)
 {
-	int	x = 0;
-	int	y = 0;
+	int		x = 0;
+	int		y = 0;
 	std::string	temp = str;
 	std::size_t	pos1 = str.find(" ");
 	std::size_t	pos2;
@@ -111,29 +115,35 @@ std::vector<std::vector<clientSpace::tilesType>>	clientSpace::CommunicateToServe
 	return {interpretTabLook(buffer)};
 }
 
-std::vector<int>	clientSpace::CommunicateToServer::inventory()
+std::vector<std::pair<clientSpace::tilesType, int>>	clientSpace::CommunicateToServer::inventory()
 {
 	std::string	buffer = "";
 
 	_client->send(_fd, "inventory");
 	while ((buffer += _client->receive(_fd)) == "");
-	return interpretTabInventory(buffer);
+	interpretTabInventory(buffer);
+	return _vec;
 }
 
 bool	clientSpace::CommunicateToServer::broadcastText()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Broadcast text");
+	_client->send(_fd, "broadcast text");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
 
 int	clientSpace::CommunicateToServer::connectNbr()
 {
-	_client->send(_fd, "Connect_nbr");
-	_client->receive(_fd);
-	return 1;
+	std::string	buffer = "";
+	std::size_t	pos;
+
+	_client->send(_fd, "connect_nbr");
+	while ((buffer += _client->receive(_fd)) == "");
+	pos = buffer.find(" ");
+	buffer.erase(buffer.begin(), buffer.begin() + pos + 1);
+	return std::stoi(buffer);
 }
 
 bool	clientSpace::CommunicateToServer::forkCmd()
@@ -158,7 +168,7 @@ bool	clientSpace::CommunicateToServer::takeObject()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Take object");
+	_client->send(_fd, "take object");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
@@ -167,7 +177,7 @@ bool	clientSpace::CommunicateToServer::setObject()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Set object");
+	_client->send(_fd, "set object");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
@@ -176,7 +186,7 @@ bool	clientSpace::CommunicateToServer::incantation()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Incantation");
+	_client->send(_fd, "incantation");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
@@ -214,20 +224,21 @@ std::vector<clientSpace::tilesType>	clientSpace::CommunicateToServer::convertTab
 	return tilesTab;
 }
 
-std::vector<int>	clientSpace::CommunicateToServer::interpretTabInventory(std::string tab)
+void	clientSpace::CommunicateToServer::interpretTabInventory(std::string tab)
 {
 	tab.erase(std::remove(tab.begin(), tab.end(), '['), tab.end());
 	tab.erase(std::remove(tab.begin(), tab.end(), ']'), tab.end());
 	std::vector<std::string>	v{explode(tab, ',')};
 	std::vector<int>		intsTab;
-	std::size_t	pos;
+	std::size_t			pos;
+	std::size_t			i = 0;
 
-	for (auto n:v) {
+	for (auto n : v) {
 		pos = n.find(" ");
 		n.erase(n.begin(), n.begin() + pos + 1);
-		intsTab.push_back(std::stoi(n));
+		_vec[i].second = std::stoi(n);
+		++i;
 	}
-	return intsTab;
 }
 
 std::vector<std::vector<clientSpace::tilesType>>	clientSpace::CommunicateToServer::interpretTabLook(std::string tab)
@@ -251,5 +262,6 @@ bool	clientSpace::CommunicateToServer::interpretString(std::string str)
 	if (str.find("ok") < str.size())
 		return (true);
 	else if (str.find("ko") < str.size())
-		return (true);
+		return (false);
+	return (false);
 }

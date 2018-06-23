@@ -36,7 +36,7 @@ namespace	clientSpace {
 			bool							right();
 			bool							left();
 			std::vector<std::vector<clientSpace::tilesType>>	look();
-			std::vector<int>					inventory();
+			std::vector<std::pair<clientSpace::tilesType, int>>	inventory();
 			bool							broadcastText();
 			int							connectNbr();
 			bool							forkCmd();
@@ -58,17 +58,19 @@ namespace	clientSpace {
 				{"food", clientSpace::tilesType::FOOD},
 				{"player", clientSpace::tilesType::PLAYER}
 			};
+			std::unique_ptr<Client>						_client;
+			ParseArgs							*_parse;
+			int								_fd;
+			std::pair<int, int>						_mapSize;
+			std::vector<std::pair<clientSpace::tilesType, int>>		_vec;
+
 			std::vector<clientSpace::tilesType>			convertTab(std::vector<std::string>);
 			void							findMapSize(std::string str);
 			int							checkNbrPlayer(std::string);
 			const std::vector<std::string>				explode(const std::string& s, const char& c);
 			std::vector<std::vector<clientSpace::tilesType>>	interpretTabLook(std::string);
-			std::vector<int>					interpretTabInventory(std::string);
+			void							interpretTabInventory(std::string);
 			bool							interpretString(std::string str);
-			std::unique_ptr<Client>					_client;
-			ParseArgs						*_parse;
-			int							_fd;
-			std::pair<int, int>					_mapSize;
 	};
 }
 
