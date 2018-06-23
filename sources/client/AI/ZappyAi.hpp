@@ -15,13 +15,14 @@
 #include "PathFinder2D.hpp"
 #include "ZappyGraph.hpp"
 #include "DecisionTree.hpp"
+#include "CommunicateToServer.hpp"
 
 namespace AI
 {
 	class ZappyAi
 	{
 	public:
-		ZappyAi(int width, int height, serverSpace::CommunicateToServer& comm);
+		ZappyAi(int width, int height, clientSpace::CommunicateToServer& comm);
 		~ZappyAi() = default;
 		ZappyAi(ZappyAi const&) = delete;
 		ZappyAi& operator=(ZappyAi const&) = delete;
@@ -36,7 +37,7 @@ namespace AI
 		};
 
 	private:
-		serverSpace::CommunicateToServer& _comm;
+		clientSpace::CommunicateToServer& _comm;
 		std::shared_ptr<ZappyGraph> _graph;
 		PathFinder2D _pathFinder;
 		DecisionTree _decisionTree;
