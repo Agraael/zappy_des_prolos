@@ -58,6 +58,7 @@ namespace	clientSpace {
 				{"food", clientSpace::tilesType::FOOD},
 				{"player", clientSpace::tilesType::PLAYER}
 			};
+			
 			std::vector<clientSpace::tilesType>			convertTab(std::vector<std::string>);
 			void							findMapSize(std::string str);
 			int							checkNbrPlayer(std::string);

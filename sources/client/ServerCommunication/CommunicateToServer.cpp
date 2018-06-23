@@ -28,8 +28,6 @@ int	clientSpace::CommunicateToServer::connectToServer()
         fcntl(_fd, F_SETFL, flag);
 	if (teamName() == 84)
 		return 84;
-	look();
-	inventory();
 	return 0;
 }
 
@@ -124,16 +122,21 @@ bool	clientSpace::CommunicateToServer::broadcastText()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Broadcast text");
+	_client->send(_fd, "broadcast text");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
 
 int	clientSpace::CommunicateToServer::connectNbr()
 {
-	_client->send(_fd, "Connect_nbr");
-	_client->receive(_fd);
-	return 1;
+	std::string	buffer = "";
+	std::size_t	pos;
+
+	_client->send(_fd, "connect_nbr");
+	while ((buffer += _client->receive(_fd)) == "");
+	pos = buffer.find(" ");
+	buffer.erase(buffer.begin(), buffer.begin() + pos + 1);
+	return std::stoi(buffer);
 }
 
 bool	clientSpace::CommunicateToServer::forkCmd()
@@ -158,7 +161,7 @@ bool	clientSpace::CommunicateToServer::takeObject()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Take object");
+	_client->send(_fd, "take object");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
@@ -167,7 +170,7 @@ bool	clientSpace::CommunicateToServer::setObject()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Set object");
+	_client->send(_fd, "set object");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
@@ -176,7 +179,7 @@ bool	clientSpace::CommunicateToServer::incantation()
 {
 	std::string	buffer = "";
 
-	_client->send(_fd, "Incantation");
+	_client->send(_fd, "incantation");
 	while ((buffer += _client->receive(_fd)) == "");
 	return interpretString(buffer);
 }
