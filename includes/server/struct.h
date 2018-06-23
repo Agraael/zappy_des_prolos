@@ -129,4 +129,5 @@ typedef struct thread_s {
     int fd;
     float time;
 }thread_t;
+
 #endif /* !STRUCT_H_ */

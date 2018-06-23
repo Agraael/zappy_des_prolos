@@ -42,7 +42,6 @@ static int assign_to_function(t_env *e, int fd, char *buff)
 	for (int i = 0; i != 14; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
 			printf("%d  %d\n", (int)tab[i].time, (int)e->infos->frequence);
-			gest_time(tab[i].time / e->infos->frequence, e, fd);
 			return (tab[i].pts(buff, fd, e));
 		}
 	}
