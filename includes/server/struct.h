@@ -16,14 +16,14 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#define STONE 7
-#define FOOD 6
-#define LINEMATE 0
 #define DERAUMERE 1
 #define SIBUR 2
 #define MENDIANE 3
 #define PHIRAS 4
 #define THYSTAME 5
+#define FOOD 6
+#define STONE 7
+#define LINEMATE 8
 
 #define FD_FREE 0
 #define FD_CLIENT 1
@@ -33,6 +33,18 @@
 #define LEFT 1
 #define UP 2
 #define DOWN 3
+
+
+typedef struct s_elevation {
+	int level;
+	size_t linemate;
+	size_t deraumere;
+	size_t sibur;
+	size_t mendiane;
+	size_t phiras;
+	size_t thystane;
+	int players_around;
+}		t_elevation;
 
 typedef struct s_stonetab {
 	int id;
@@ -45,14 +57,19 @@ typedef struct s_printtab {
 }              t_printtab;
 
 typedef struct	vec_s {
-	size_t	x;
-	size_t	y;
+	int	x;
+	int	y;
 }		vec_t;
+
+typedef struct s_infoteam {
+	char *name;
+	int players_remaining;
+} t_infoteam;
 
 typedef struct	info_s {
 	size_t	port;
 	vec_t	map_size;
-	char	**team_names;
+	t_infoteam *team_names;
 	size_t	clients_nb;
 	size_t	frequence;
 	char	***map;
@@ -61,32 +78,41 @@ typedef struct	info_s {
 
 typedef void(*fct)();
 
+typedef struct	stones_s {
+    size_t linemate;
+    size_t deraumere;
+    size_t sibur;
+    size_t mendiane;
+    size_t phiras;
+    size_t thystame;
+}stone_t;
+
+typedef struct	inventory_s {
+    stone_t stone;
+    size_t food;
+}inventory_t;
+
 typedef struct s_env
 {
-        char fd_type[MAX_FD];
-        fct fct_read[MAX_FD];
-        fct fct_write[MAX_FD];
-        infos_t *infos;
+	char fd_type[MAX_FD];
+	fct fct_read[MAX_FD];
+	fct fct_write[MAX_FD];
+	int has_team[MAX_FD];
+	infos_t *infos;
 	int dir[MAX_FD];
 	int vision_field[MAX_FD];
 	vec_t pos_ia[MAX_FD];
+	inventory_t inventory[MAX_FD];
 } t_env;
 
 typedef struct s_serv_functions {
         char *str;
         int (*pts)(char *, int, t_env *);
         int length;
+        float time;
 } t_serv_functions;
 	
 //fin
-typedef struct	stones_s {
-	size_t	linemaute;
-	size_t	deraumere;
-	size_t	sibur;
-	size_t	mendiane;
-	size_t	phiras;
-	size_t	thystane;
-}		stone_t;
 
 typedef struct  client_s {
 	size_t	time_units;
@@ -98,4 +124,9 @@ typedef	struct	s_functions {
 	int	(*func)(char **, size_t, infos_t **);
 }		t_functions;
 
+typedef struct thread_s {
+    t_env *e;
+    int fd;
+    float time;
+}thread_t;
 #endif /* !STRUCT_H_ */

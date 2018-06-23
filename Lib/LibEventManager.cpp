@@ -22,6 +22,17 @@ bool graphic::LibEventManager::OnEvent(const irr::SEvent& event)
 		irr::s32 id = event.GUIEvent.Caller->getID();
 		switch(event.GUIEvent.EventType)
 		{
+			case (irr::EET_MOUSE_INPUT_EVENT) :
+				switch(event.MouseInput.Event)
+				{
+					case irr::EMIE_MOUSE_MOVED:
+						_inputMouse.x = event.MouseInput.X;
+						_inputMouse.y = event.MouseInput.Y;
+						break;
+					default:
+						break;
+				}
+				break ;
 		case irr::gui::EGET_BUTTON_CLICKED:
 			_pressedButton = id;
 			switch(id)

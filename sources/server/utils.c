@@ -28,8 +28,10 @@ vec_t create_random_pos(vec_t map_size)
 {
 	vec_t pos_ia;
 
-	pos_ia.x = rand() % map_size.x - 1;
-	pos_ia.y = rand() % map_size.y - 1;
+	pos_ia.x = rand() % (map_size.x - 1);
+	printf("%d\n", pos_ia.x);
+	pos_ia.y = rand() % (map_size.y - 1);
+	printf("%d\n", pos_ia.y);
 	return (pos_ia);
 }
 

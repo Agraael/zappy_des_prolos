@@ -22,10 +22,18 @@ int	help(char **, size_t, infos_t **);
 void	init_default_info(infos_t **);
 bool    is_str_digit(char *);
 bool	check_validity(infos_t *);
+void print_case(int fd, t_env *e, vec_t pos);
 vec_t create_random_pos(vec_t map_size);
+void print_lines_left(int fd, t_env *e, int nbr_of_lines);
+void print_lines_right(int fd, t_env *e, int nbr_of_lines);
+void print_lines_up(int fd, t_env *e, int nbr_of_lines);
+void print_lines_down(int fd, t_env *e, int nbr_of_lines);
+void verif_pos(int fd, t_env *e);
+int fct_server_teamname(char *cmdline, int fd, t_env *e);
 int fct_server_incantation(char *cmd_line, int fd, t_env *e);
 int fct_server_forward(char *cmd_line, int fd, t_env *e);
 int fct_server_right(char *cmd_line, int fd, t_env *e);
+int fct_server_quit(char *cmd_line, int fd, t_env *e);
 int fct_server_left(char *cmd_line, int fd, t_env *e);
 int fct_server_look(char *cmd_line, int fd, t_env *e);
 int fct_server_inventory(char *cmd_line, int fd, t_env *e);
@@ -40,5 +48,8 @@ char *epur(char *test);
 char **my_str_to_wordtab(char *str, char delim);
 void create_server(infos_t *infos);
 void generate_map(infos_t *infos_game);
+
+void gest_time(float time, t_env *e, int fd);
+void *live_alone(void *arg);
 
 #endif /* !FTCS_H_ */

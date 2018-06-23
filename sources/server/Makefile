@@ -7,7 +7,10 @@
 
 CC		= gcc
 
-CPPFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -g3
+CFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -lm -g3
+
+LDFLAGS = -L. -lpthread
+
 CFLAGS		= -I ../../includes/server/
 
 NAME		= ../../zappy_server
@@ -21,7 +24,10 @@ SRCS            =	main.c		\
 			server.c	\
 			help.c		\
 			loop_server.c	\
+			functions/fct_server_look_direction.c \
+			functions/fct_server_teamname.c	\
 			functions/fct_server_forward.c	\
+			functions/fct_server_quit.c	\
 			functions/fct_server_right.c	\
 			functions/fct_server_left.c	\
 			functions/fct_server_look.c	\
@@ -33,12 +39,13 @@ SRCS            =	main.c		\
 			functions/fct_server_take.c	\
 			functions/fct_server_setobject.c	\
 			functions/fct_server_incantation.c	\
-			map_generation/generator.c
+			map_generation/generator.c          \
+			gest_timer.c                        \
 
 OBJS            = $(SRCS:.c=.o)
 
 all :		$(OBJS)
-		$(CC) $(CPPFLAGS) $(OBJS) -o $(NAME)
+		$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean :
 		rm -f $(OBJS)

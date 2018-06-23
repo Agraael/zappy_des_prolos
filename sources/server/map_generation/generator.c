@@ -11,7 +11,7 @@
 #include <time.h>
 
 static const t_stonetab stonetab[] = {
-	{0, LINEMATE},
+	{8, LINEMATE},
 	{1, DERAUMERE},
 	{2, SIBUR},
 	{3, MENDIANE},
@@ -55,7 +55,7 @@ static char **randomly_fill_with_food(int size_y)
 
 void generate_map(infos_t *infos_game)
 {
-	size_t x = 0;
+	int x = 0;
 
 	srand(time(NULL));
 	infos_game->map = malloc(sizeof(char **) * (infos_game->map_size.x + 1));

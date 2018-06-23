@@ -5,6 +5,7 @@
 ** fz
 */
 
+#include "fcts.h"
 #include "struct.h"
 
 int fct_server_right(char *cmd_line, int fd, t_env *e)
@@ -21,5 +22,6 @@ int fct_server_right(char *cmd_line, int fd, t_env *e)
 		else
 			e->dir[fd] = DOWN;
 	}
+	dprintf(fd, "ok\n");
 	return (0);
 }

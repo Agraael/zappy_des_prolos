@@ -30,6 +30,7 @@ namespace graphic
         ~Player() = default;
         void eventManager(const std::string &cmd);
         void updatePosPlayer() { _player->setPosition(irr::core::vector3df({static_cast<float>(_pos.x), static_cast<float>(_pos.y), 0})); }
+        irr::scene::ISceneNode *getNode() const { return _player; }
     };
 }
 #endif //CLIENT_HPP

@@ -22,6 +22,7 @@ bool	check_validity(infos_t *infos)
 		dprintf(2, "%s\n", ARGS_PROBLEM);
 		return false;
 	}
+	//printf("%d\n", infos->map_size.y);
 	return true;
 }
 

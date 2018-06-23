@@ -18,11 +18,6 @@ struct vec3df {
 	double	z;
 };
 
-struct	vec2d {
-	int	x;
-	int	y;
-};
-
 struct	sphere_t {
 	double	diameter;
 	bool	rotate;
@@ -42,6 +37,12 @@ namespace graphic {
 		std::string _name;
 		std::string _desc;
 	} infos_t;
+    enum
+    {
+        ID_IsNotPickable = 0,
+        IDFlag_IsPickable = 1 << 0,
+        IDFlag_IsHighlightable = 1 << 1
+    };
 	class IrrlichtLib
 	{
 		public:
@@ -54,7 +55,6 @@ namespace graphic {
 			void			clearGui() noexcept;
 			void			clearScene() noexcept;
             void modifyLight(int nbr);
-            void selectNode(irr::scene::ISceneNode* pNode);
             void setSkinTransparency(irr::s32 alpha, irr::gui::IGUISkin *skin);
             irr::s32 getLight() { return _light; }
 			irr::scene::ISceneNode	*createCube(const vec3df &, const std::string &, irr::s32);
