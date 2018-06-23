@@ -7,7 +7,7 @@
 
 #include "ZappyAi.hpp"
 
-AI::ZappyAi::ZappyAi(int width, int height, serverSpace::CommunicateToServer& comm)
+AI::ZappyAi::ZappyAi(int width, int height, clientSpace::CommunicateToServer& comm)
 	: _comm(comm), _graph(std::make_shared<ZappyGraph>(width, height)), _pathFinder(), _decisionTree()
 {
 	_pathFinder.setGraph(_graph);
@@ -103,7 +103,6 @@ void AI::ZappyAi::setLevel1Decisions()
 {
 	_decisionTree.reset();
 }
-
 
 bool AI::ZappyAi::ActionIsActionQueue::operator()()
 {
