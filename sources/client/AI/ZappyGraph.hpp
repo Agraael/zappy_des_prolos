@@ -22,7 +22,7 @@ namespace AI
 	enum class ZappyElement {
 		FOOD,
 		LINEMATE, DERAUMERE, SIBUR, MENDIANE, PHIRAS, THYSTAME,
-		NONE, UNKNOW, PLAYER
+		PLAYER
 	};
 
 	class ZappyGraph
@@ -33,6 +33,7 @@ namespace AI
 		struct ZappyNode
 			: IGraph::Node {
 			std::size_t age {0};
+			bool unknown {true};
 			std::vector<AI::ZappyElement> elements {};
 		};
 

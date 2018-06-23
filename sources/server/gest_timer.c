@@ -9,23 +9,13 @@
 #include "fcts.h"
 #include <pthread.h>
 
-void *live_alone(void *argument)
+void live_alone(t_env *e)
 {
-    int b = 0;
-    int max = 0;
-    thread_t *arg = (thread_t *)argument;
-
-    while (!b)
-    {
-        max = 0;
-        sleep(1);
         for (int i = 0; i < MAX_FD; i++)
-            if (arg->e->fd_type[i] == FD_CLIENT) {
-                arg->e->inventory[i].food -= 1;
-                //printf("le joueur %d a %d food\n", i, (int)arg->e->inventory[i].food);
+            if (e->fd_type[i] == FD_CLIENT) {
+                printf("[%d->%d]\n", i, (int)e->inventory[i].food);
+                e->inventory[i].food -= 1;
             }
-    }
-    pthread_exit(NULL);
 }
 
 void *timer(void *argument)
