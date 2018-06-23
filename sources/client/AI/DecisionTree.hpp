@@ -29,7 +29,7 @@ namespace AI
 			std::string description {};
 		};
 
-		void addDecision(std::size_t id, DecisionFunc func, std::string const& description);
+		void addDecision(std::size_t id, DecisionFunc func, std::string const& description = "<No description>");
 		void addChoice(std::size_t id_node, std::size_t id_choise, bool choice);
 		bool Do(std::size_t start_id, bool verbose);
 		void reset();

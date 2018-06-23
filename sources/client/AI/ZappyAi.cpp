@@ -6,6 +6,7 @@
 */
 
 #include "ZappyAi.hpp"
+#include "linux_color.hpp"
 
 AI::ZappyAi::ZappyAi(int width, int height, clientSpace::CommunicateToServer& comm)
 	: _comm(comm), _graph(std::make_shared<ZappyGraph>(width, height)), _pathFinder(), _decisionTree()
@@ -38,7 +39,34 @@ std::map<AI::ZappyElement, size_t> const& AI::ZappyAi::getInventory() const
 	return _inventory;
 }
 
-void AI::ZappyAi::translatePathToAction(std::vector<AI::IGraph::Coord2D> path)
+
+void AI::ZappyAi::dump()
+{
+	for (auto y = 0; y < _graph->getHeight(); ++y) {
+		for (auto x = 0; x < _graph->getWidth(); ++x) {
+			auto find = _graph->getNodeAt(x, y);
+			Linux::color(Linux::TermColor::BOLD_ON);
+			if (find == std::nullopt)
+				std::cout << "[ ]";
+			else {
+				AI::IGraph::NodePtr elem(find.value());
+				if (elem->point.coord == _postion)
+					Linux::color(Linux::TermColor::RED_BG);
+				else if ((std::find_if(_pathPos.begin(), _pathPos.end(), [x, y](IGraph::Coord2D const& s) {
+					return s.x == x && s.y == y;
+				})) != _pathPos.end())
+					Linux::color(Linux::TermColor::YELLOW_BG);
+				std::cout << "[ ]";
+			}
+			Linux::color(Linux::TermColor::RESET);
+			std::cout << " ";
+		}
+		std::cout << std::endl << std::endl;
+	}
+	std::cout << _postion.x << "," << _postion.y << std::endl;
+}
+
+void AI::ZappyAi::translatePathToAction(std::vector<AI::IGraph::Coord2D>const & path)
 {
 	static const std::map<AI::PathFinder2D::Direction, std::map<AI::PathFinder2D::Direction, MoveAction>> actionMove = {
 		{AI::PathFinder2D::Direction::NORTH,{
@@ -87,7 +115,7 @@ void AI::ZappyAi::translatePathToAction(std::vector<AI::IGraph::Coord2D> path)
 
 		auto find = directionMove.at(resPos);
 		if (find == AI::PathFinder2D::Direction::NONE)
-			std::cout << "do nothing" << std::endl;
+			_actionQueue.push(MoveAction::DO_NOTHING);
 		else {
 			if (find != _orientation) {
 				_actionQueue.push(actionMove.at(_orientation).at(find));
@@ -99,18 +127,164 @@ void AI::ZappyAi::translatePathToAction(std::vector<AI::IGraph::Coord2D> path)
 	}
 }
 
+void AI::ZappyAi::pathToQueue(std::vector<AI::IGraph::Coord2D> const& path)
+{
+	for (auto& item : path) {
+		_pathQueue.push(item);
+	}
+}
+
+void AI::ZappyAi::run(bool testing)
+{
+	decisionTreeLvl1();
+	while (666) {
+		_decisionTree.Do(1, testing);
+		if (testing) {
+			dump();
+			int x;
+			std::cin >> x;
+			std::cout << "\033c" <<std::endl;
+		}
+	}
+}
+
 void AI::ZappyAi::setLevel1Decisions()
 {
 	_decisionTree.reset();
 }
 
-bool AI::ZappyAi::ActionIsActionQueue::operator()()
+bool AI::ZappyAi::moveForward()
+{
+	bool res {false};
+
+	if (not _pathQueue.empty() && not _actionQueue.empty()) {
+//		res = _comm.forward();
+		res = true;
+		if (res) {
+			_postionOld = _postion;
+			_postion = _pathQueue.front();
+			_pathQueue.pop();
+			_actionQueue.pop();
+			std::cout << __func__ << std::endl;
+		}
+	}
+	return res;
+}
+
+bool AI::ZappyAi::turnLeft()
+{
+	bool res {false};
+
+	if (not _pathQueue.empty() && not _actionQueue.empty()) {
+//		res = _comm.left();
+		res = true;
+		if (res) {
+			_orientation = PathFinder2D::directionRotate90(_orientation, false);
+			_actionQueue.pop();
+			std::cout << __func__ << std::endl;
+		}
+	}
+	return res;
+}
+
+bool AI::ZappyAi::turnRight()
+{
+	bool res {false};
+
+	if (not _pathQueue.empty() && not _actionQueue.empty()) {
+//		res = _comm.right();
+		res = true;
+		if (res) {
+			_orientation = PathFinder2D::directionRotate90(_orientation, true);
+			_actionQueue.pop();
+			std::cout << __func__ << std::endl;
+		}
+	}
+	return res;
+}
+
+bool AI::ZappyAi::turnBack()
+{
+	bool res {false};
+
+	if (not _pathQueue.empty() && not _actionQueue.empty()) {
+//		res = _comm.right();
+		res = true;
+		if (res)
+			_orientation = PathFinder2D::directionRotate90(_orientation, true);
+		else
+			return false;
+//		res = _comm.right();
+		res = true;
+		if (res)
+			_orientation = PathFinder2D::directionRotate90(_orientation, true);
+		else
+			return false;
+		_actionQueue.pop();
+		std::cout << __func__ << std::endl;
+	}
+	return res;
+}
+
+bool AI::ZappyAi::look()
+{
+	return true;
+}
+
+void AI::ZappyAi::decisionTreeLvl1()
+{
+	_decisionTree.addDecision(1, FunctorIsActionQueue(*this), "Do i have any path to do ?");
+	_decisionTree.addDecision(2, FunctorMakeRandomPath(*this), "Did i Found a new random Path ?");
+	_decisionTree.addDecision(3, FunctorDoPathAction(*this), "Did i succeed my next action ?");
+	_decisionTree.addDecision(4, FunctorLook(*this), "Look ?");
+
+	_decisionTree.addChoice(1, 3 , true);
+	_decisionTree.addChoice(1, 2 , false);
+	_decisionTree.addChoice(2, 3 , true);
+	_decisionTree.addChoice(3, 4 , true);
+}
+
+/// ---------------- decision functor ------------------------
+
+bool AI::ZappyAi::FunctorIsActionQueue::operator()()
 {
 	return !_ai._actionQueue.empty();
 }
 
-bool AI::ZappyAi::ActionMakeRandomPath::operator()()
+bool AI::ZappyAi::FunctorMakeRandomPath::operator()()
 {
-	_ai.translatePathToAction(_ai._pathFinder.randomPath(_ai._postion, 10,_ai._orientation));
-	return !_ai._actionQueue.empty();
+	_ai._pathPos = _ai._pathFinder.randomPath(_ai._postion, 10,_ai._orientation);
+	if (_ai._pathPos.empty())
+		return false;
+	_ai.translatePathToAction(_ai._pathPos);
+	_ai.pathToQueue(_ai._pathPos);
+	return true;
+}
+
+bool AI::ZappyAi::FunctorDoPathAction::operator()()
+{
+	auto action = _ai._actionQueue.front();
+	bool res {false};
+
+	switch (action) {
+		case MoveAction::MOVE_FORWARD :
+			res =  _ai.moveForward(); break;
+		case MoveAction::TURN_LEFT :
+			res =  _ai.turnLeft(); break;
+		case MoveAction::TURN_RIGHT :
+			res =  _ai.turnRight(); break;
+		case MoveAction::TURN_BACK :
+			res =  _ai.turnBack(); break;
+		case MoveAction::DO_NOTHING :
+			res = true;
+			_ai._actionQueue.pop();
+			_ai._pathQueue.pop();
+			std::cout << "do nothing" << std::endl;
+	}
+	return res;
+}
+
+bool AI::ZappyAi::FunctorLook::operator()()
+{
+	return _ai.look();
 }
