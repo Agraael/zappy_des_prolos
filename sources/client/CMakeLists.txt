@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.9 )
 project( zappy )
 
 set(MY_MAKE_CXX_FLAGS "-Wall -Werror -Wextra -pedantic -Wfloat-equal -Wshadow \
--Weffc++ -Wstrict-overflow=5 -Wcast-align -Wconversion -ftrapv \
+ -Wstrict-overflow=5 -Wcast-align -Wconversion -ftrapv \
 -Wuninitialized -Wuseless-cast -Wold-style-cast -Wnon-virtual-dtor")
 
 include_directories(../../includes/client ServerCommunication Parsing AI)
@@ -27,6 +27,10 @@ set_source_files_properties(
 		AI/linux_color.hpp
 		AI/PathFinder2D.cpp
 		AI/PathFinder2D.hpp
+		AI/ZappyAi.cpp
+		AI/ZappyAi.hpp
+		AI/DecisionTree.cpp
+		AI/DecisionTree.hpp
 		PROPERTIES
 		COMPILE_FLAGS ${MY_MAKE_CXX_FLAGS}
 )
@@ -46,4 +50,7 @@ add_executable( zappy_ai
 				AI/linux_color.hpp
 				AI/PathFinder2D.cpp
 				AI/PathFinder2D.hpp
-				)
+				AI/ZappyAi.cpp
+				AI/ZappyAi.hpp
+				AI/DecisionTree.cpp
+				AI/DecisionTree.hpp )

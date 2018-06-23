@@ -110,3 +110,11 @@ bool AI::ZappyGraph::isBorderless() const
 {
 	return _borderless;
 }
+
+std::optional<AI::ZappyGraph::ZappyNodePtr> AI::ZappyGraph::getZappyNodeAt(int x, int y)
+{
+	checkNodes();
+	if (x >= _width || x < 0 || y >= _height || y < 0)
+		return {std::nullopt};
+	return  {_nodes->at(y *_width + x)};
+}

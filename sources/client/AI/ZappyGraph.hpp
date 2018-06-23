@@ -21,7 +21,8 @@ namespace AI
 {
 	enum class ZappyElement {
 		FOOD,
-		NONE,
+		LINEMATE, DERAUMERE, SIBUR, MENDIANE, PHIRAS, THYSTAME,
+		NONE, UNKNOW, PLAYER
 	};
 
 	class ZappyGraph
@@ -50,6 +51,7 @@ namespace AI
 		bool isCentered() const final;
 		bool isBorderless() const final;
 		std::optional<NodePtr> getNodeAt(int x, int y) final;
+		std::optional<ZappyNodePtr> getZappyNodeAt(int x, int y);
 
 		void resetGraph(int width, int height, bool);
 		void deleteGraph();
