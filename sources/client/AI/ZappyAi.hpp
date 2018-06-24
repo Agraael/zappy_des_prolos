@@ -30,7 +30,7 @@ namespace AI
 		PathFinder2D::Direction getOrientation() const;
 		IGraph::Coord2D const& getPostion() const;
 		size_t getLevel() const;
-		std::map<ZappyElement, size_t> const& getInventory() const;
+		std::map<clientSpace::tilesType, size_t> const& getInventory() const;
 
 		enum class MoveAction {
 			MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, TURN_BACK, DO_NOTHING
@@ -44,16 +44,18 @@ namespace AI
 		std::shared_ptr<ZappyGraph> _graph;
 		PathFinder2D _pathFinder;
 		DecisionTree _decisionTree;
+		std::map<clientSpace::tilesType, size_t> _objectif {};
 		PathFinder2D::Direction _orientation = PathFinder2D::Direction::NORTH;
 		IGraph::Coord2D _postion {0,0};
 		IGraph::Coord2D _postionOld {0,0};
 		size_t _level {1};
-		std::map<ZappyElement, size_t> _inventory {};
+		std::map<clientSpace::tilesType, size_t> _inventory {};
 		std::queue<MoveAction> _actionQueue {};
 		std::queue<IGraph::Coord2D> _pathQueue {};
 		std::vector<IGraph::Coord2D> _pathPos {};
 
 		void decisionTreeLvl1();
+		void objectifLvl1();
 
 		void setLevel1Decisions();
 		void translatePathToAction(std::vector<IGraph::Coord2D> const& path);
@@ -64,6 +66,7 @@ namespace AI
 		bool turnRight();
 		bool turnBack();
 		bool look();
+		bool CheckObjectif();
 
 	public:
 		/// ---------------- decision functor ------------------------
@@ -79,23 +82,43 @@ namespace AI
 		class FunctorIsActionQueue : public DecisionFunctor {
 		public:
 			explicit FunctorIsActionQueue(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
+			bool operator() () final;};
 		class FunctorMakeRandomPath : public DecisionFunctor {
 		public:
 			explicit FunctorMakeRandomPath(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
+			bool operator() () final;};
 		class FunctorDoPathAction : public DecisionFunctor {
 		public:
 			explicit FunctorDoPathAction(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
+			bool operator() () final;};
 		class FunctorLook : public DecisionFunctor {
 		public:
 			explicit FunctorLook(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
+			bool operator() () final;};
+		class FunctorMyPosIsNotEmpty : public DecisionFunctor {
+		public:
+			explicit FunctorMyPosIsNotEmpty(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorIfplayerOnMyPos : public DecisionFunctor {
+		public:
+			explicit FunctorIfplayerOnMyPos(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorTake : public DecisionFunctor {
+		public:
+			explicit FunctorTake(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorDoINeedIt : public DecisionFunctor {
+		public:
+			explicit FunctorDoINeedIt(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorSucceedObjectif : public DecisionFunctor {
+		public:
+			explicit FunctorSucceedObjectif(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorEvolve : public DecisionFunctor {
+		public:
+			explicit FunctorEvolve(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
 	};
 }
 

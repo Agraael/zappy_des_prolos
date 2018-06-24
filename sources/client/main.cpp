@@ -15,11 +15,11 @@ int	main(int, char **av)
 	ParseArgs	*parse = new ParseArgs(av);
 	clientSpace::CommunicateToServer	client(parse);
 
-//	parse->Parser();
-//	if (parse->checkArgs() == 84)
-//		return (84);
+	parse->Parser();
+	if (parse->checkArgs() == 84)
+		return (84);
 	client.connectToServer();
-	AI::ZappyAi AI(20, 20, client);
-	AI.run(true);
+	AI::ZappyAi AI(client.getSize().first, client.getSize().second, client);
+	AI.run(false);
 	return 0;
 }

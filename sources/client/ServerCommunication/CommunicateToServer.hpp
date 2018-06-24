@@ -49,12 +49,12 @@ namespace	clientSpace {
 		private:
 			const std::unordered_map<std::string, clientSpace::tilesType>	_correlationTab = {
 				{"", clientSpace::tilesType::NOTHING},
-				{"limenate", clientSpace::tilesType::LINEMATE},
+				{"linemate", clientSpace::tilesType::LINEMATE},
 				{"deraumere", clientSpace::tilesType::DERAUMERE},
 				{"sibur", clientSpace::tilesType::SIBUR},
 				{"mendiane", clientSpace::tilesType::MENDIANE},
 				{"phiras", clientSpace::tilesType::PHIRAS},
-				{"thystane", clientSpace::tilesType::THYSTAME},
+				{"thystame", clientSpace::tilesType::THYSTAME},
 				{"food", clientSpace::tilesType::FOOD},
 				{"player", clientSpace::tilesType::PLAYER}
 			};
