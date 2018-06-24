@@ -9,6 +9,15 @@
 #include "fcts.h"
 #include <pthread.h>
 
+void push(int (*pts)(), t_passing arg)
+{
+    t_timer *element = malloc(sizeof(t_timer));
+    element->pts = arg->pts;
+    element->time = arg->
+    element->prec = e->time;
+    *p = element;
+}
+
 void live_alone(t_env *e)
 {
         for (int i = 0; i < MAX_FD; i++)

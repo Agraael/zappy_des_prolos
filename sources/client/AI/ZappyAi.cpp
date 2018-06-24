@@ -5,7 +5,7 @@
 ** Created by kraken, 21/06/18
 */
 
-#include <zconf.h>
+#include  <unistd.h>
 #include "ZappyAi.hpp"
 #include "linux_color.hpp"
 
