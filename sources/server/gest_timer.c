@@ -27,28 +27,15 @@ void live_alone(t_env *e)
             }
 }
 
-void *timer(void *argument)
+void gest_time(float time, t_env *e, int fd, clock_t tempsdebut)
 {
-    thread_t *arg = (thread_t *)argument;
+    clock_t tempsFin = clock();
+    int delta;
 
-    arg->e->fd_type[arg->fd] = FD_FREE;
-    usleep(arg->time * 1000000);
-    arg->e->fd_type[arg->fd] = FD_CLIENT;
-    pthread_exit(NULL);
-}
+    tempsFin = clock();
+    e->inventory[fd].food -= time;
+    delta = tempsFin - tempsdebut / CLOCKS_PER_SEC;
+    printf("%d\n", delta);
 
-void gest_time(float time, t_env *e, int fd)
-{
-       pthread_t thread_timer;
-       thread_t argument;
 
-       e->inventory[fd].food -= time;
-       argument.e = e;
-       argument.fd = fd;
-       argument.time = time;
-       if(pthread_create(&thread_timer, NULL, timer, (void *)&argument) == -1)
-           return ;
-        if (pthread_join(thread_timer, NULL)) {
-            return ;
-    }
 }
