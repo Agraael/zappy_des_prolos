@@ -9,6 +9,7 @@
 #include "struct.h"
 #include "fcts.h"
 #include <string.h>
+#include <time.h>
 #include <stdlib.h>
 
 static const t_serv_functions tab[] = {
@@ -30,11 +31,7 @@ static const t_serv_functions tab[] = {
 
 static int assign_to_function(t_env *e, int fd, char *buff)
 {
-<<<<<<< HEAD
-	t_passing arg;
-=======
 	clock_t tempsDebut = clock();
->>>>>>> bec5d7c293f00c4ebde039b5c8acd024beade3a5
 
 	if (e->has_team[fd] == -1) {
 		if (strncmp(tab[11].str, buff, tab[11].length) == 0)
@@ -46,17 +43,8 @@ static int assign_to_function(t_env *e, int fd, char *buff)
 	}
 	for (int i = 0; i != 14; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
-<<<<<<< HEAD
-			arg.e = e;
-			arg.fd = fd;
-			arg.buff = buff;
-			arg.time =  time;
-			push(tab[i].pts, &arg);
-			return (0);
-=======
 			gest_time(tab[i].time, e, fd, tempsDebut);
 			return (tab[i].pts(buff, fd, e));
->>>>>>> bec5d7c293f00c4ebde039b5c8acd024beade3a5
 		}
 	}
 	return (0);

@@ -6,7 +6,6 @@
 */
 
 #include "struct.h"
-#include <pthread.h>
 #include <fcts.h>
 
 int loop_server(t_env *e)
@@ -17,7 +16,6 @@ int loop_server(t_env *e)
 	fd_set fd_read;
 	struct timeval timeout;
 
-	e->time = NULL;
 	timeout.tv_sec = 0;
 	timeout.tv_usec = 0;
 

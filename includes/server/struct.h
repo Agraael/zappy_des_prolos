@@ -92,13 +92,6 @@ typedef struct	inventory_s {
     size_t food;
 }inventory_t;
 
-typedef struct s_timer
-{
-	int (*pts)(char *, int, t_env *);
-	int time;
-	struct s_timer *prec;
-
-} t_timer ;
 
 typedef struct s_env
 {
@@ -111,7 +104,6 @@ typedef struct s_env
 	int vision_field[MAX_FD];
 	vec_t pos_ia[MAX_FD];
 	inventory_t inventory[MAX_FD];
-	t_timer *time;
 } t_env;
 
 typedef struct s_serv_functions {
@@ -132,11 +124,6 @@ typedef	struct	s_functions {
 	int	(*func)(char **, size_t, infos_t **);
 }		t_functions;
 
-typedef	struct	s_passing {
-	t_env * e;
-	int fd;
-	char *buff;
-}		t_passing;
 
 
 #endif /* !STRUCT_H_ */
