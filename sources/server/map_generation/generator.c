@@ -11,7 +11,7 @@
 #include <time.h>
 
 static const t_stonetab stonetab[] = {
-	{8, LINEMATE},
+	{0, LINEMATE},
 	{1, DERAUMERE},
 	{2, SIBUR},
 	{3, MENDIANE},
@@ -25,10 +25,10 @@ static char **randomly_fill_with_minerals(char **line, int size_y)
 	int y = 0;
 
 	for (y = 0; y < size_y; y++) {
-		if ((line[y][0] == FOOD) || (rand() % 2 == 0))
+		if ((line[y][0] == FOOD) || (rand() % 6 == 0))
 			continue ;
-                mineral = rand() % 5;
-		for (int i = 0; i < 5; i++)
+                mineral = rand() % 6;
+		for (int i = 0; i < 6; i++)
 			if (mineral == stonetab[i].id)
 				line[y][0] = stonetab[i].stone;
         }

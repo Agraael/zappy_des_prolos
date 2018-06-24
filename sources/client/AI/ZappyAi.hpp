@@ -30,28 +30,48 @@ namespace AI
 		PathFinder2D::Direction getOrientation() const;
 		IGraph::Coord2D const& getPostion() const;
 		size_t getLevel() const;
-		std::map<ZappyElement, size_t> const& getInventory() const;
+		std::map<clientSpace::tilesType, size_t> const& getInventory() const;
 
 		enum class MoveAction {
-			MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, TURN_BACK
+			MOVE_FORWARD, TURN_RIGHT, TURN_LEFT, TURN_BACK, DO_NOTHING
 		};
+
+		void dump();
+		void run(bool testing);
 
 	private:
 		clientSpace::CommunicateToServer& _comm;
 		std::shared_ptr<ZappyGraph> _graph;
 		PathFinder2D _pathFinder;
 		DecisionTree _decisionTree;
+		std::map<clientSpace::tilesType, size_t> _objectif {};
 		PathFinder2D::Direction _orientation = PathFinder2D::Direction::NORTH;
 		IGraph::Coord2D _postion {0,0};
+		IGraph::Coord2D _postionOld {0,0};
 		size_t _level {1};
-		std::map<ZappyElement, size_t> _inventory {};
+		std::map<clientSpace::tilesType, size_t> _inventory {};
 		std::queue<MoveAction> _actionQueue {};
+		std::queue<IGraph::Coord2D> _pathQueue {};
+		std::vector<IGraph::Coord2D> _pathPos {};
 
-		void setLevel1Decisions();
-		void translatePathToAction(std::vector<IGraph::Coord2D> path);
+		void decisionTreeLvl1();
+		void objectifLvl1();
+		void decisionTreeLvl2();
+		void objectifLvl2();
+
+		void resetDecisionTree();
+		void translatePathToAction(std::vector<IGraph::Coord2D> const& path);
+		void pathToQueue(std::vector<IGraph::Coord2D> const& path);
+
+		bool moveForward();
+		bool turnLeft();
+		bool turnRight();
+		bool turnBack();
+		bool look();
+		bool CheckObjectif();
 
 	public:
-		/// ---------------- decisnion functor
+		/// ---------------- decision functor ------------------------
 		class DecisionFunctor {
 		public:
 			explicit DecisionFunctor(ZappyAi& ai) : _ai(ai){};
@@ -61,16 +81,50 @@ namespace AI
 			ZappyAi& _ai;
 		};
 
-		class ActionIsActionQueue : public DecisionFunctor {
+		class FunctorIsActionQueue : public DecisionFunctor {
 		public:
-			explicit ActionIsActionQueue(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
-		class ActionMakeRandomPath : public DecisionFunctor {
+			explicit FunctorIsActionQueue(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorMakeRandomPath : public DecisionFunctor {
 		public:
-			explicit ActionMakeRandomPath(ZappyAi& ai) : DecisionFunctor(ai){};
-			bool operator() () final;
-		};
+			explicit FunctorMakeRandomPath(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorDoPathAction : public DecisionFunctor {
+		public:
+			explicit FunctorDoPathAction(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorLook : public DecisionFunctor {
+		public:
+			explicit FunctorLook(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorMyPosIsNotEmpty : public DecisionFunctor {
+		public:
+			explicit FunctorMyPosIsNotEmpty(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorIfplayerOnMyPos : public DecisionFunctor {
+		public:
+			explicit FunctorIfplayerOnMyPos(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorTake : public DecisionFunctor {
+		public:
+			explicit FunctorTake(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorDoINeedIt : public DecisionFunctor {
+		public:
+			explicit FunctorDoINeedIt(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorSucceedObjectif : public DecisionFunctor {
+		public:
+			explicit FunctorSucceedObjectif(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorEvolve : public DecisionFunctor {
+		public:
+			explicit FunctorEvolve(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorLevelUp : public DecisionFunctor {
+		public:
+			explicit FunctorLevelUp(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
 	};
 }
 

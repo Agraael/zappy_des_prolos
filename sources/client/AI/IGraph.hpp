@@ -35,6 +35,8 @@ namespace AI
 			int y;
 			bool operator==(Coord2D const& rhs) const;
 			bool operator!=(Coord2D const& rhs) const;
+			Coord2D operator+ (Coord2D const& rhs);
+			Coord2D operator- (Coord2D const& rhs);
 		};
 
 		struct Point {

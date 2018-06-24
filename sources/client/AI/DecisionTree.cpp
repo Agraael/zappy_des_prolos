@@ -8,7 +8,7 @@
 #include <iostream>
 #include "DecisionTree.hpp"
 
-void AI::DecisionTree::addDecision(std::size_t id, AI::DecisionTree::DecisionFunc func, std::string const& description = "<No description>")
+void AI::DecisionTree::addDecision(std::size_t id, AI::DecisionTree::DecisionFunc func, std::string const& description)
 {
 	_nodeMap[id].Action = func;
 	_nodeMap[id].description = description;
