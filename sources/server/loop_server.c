@@ -16,9 +16,10 @@ int loop_server(t_env *e)
 	int fd_max;
 	fd_set fd_read;
 	struct timeval timeout;
+
+	e->time = NULL;
 	timeout.tv_sec = 0;
 	timeout.tv_usec = 0;
-
 
 	while (1) {
 		FD_ZERO(&fd_read);
@@ -32,7 +33,6 @@ int loop_server(t_env *e)
 		for (i = 0; i < MAX_FD; i++)
 			if (FD_ISSET(i, &fd_read))
 				e->fct_read[i](e, i);
-
 	}
 	return (0);
 }

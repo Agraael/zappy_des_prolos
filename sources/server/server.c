@@ -11,7 +11,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 static const t_serv_functions tab[] = {
         {"forward", &fct_server_forward, 7, 7},
         {"right", &fct_server_right, 5, 7},
@@ -31,6 +30,8 @@ static const t_serv_functions tab[] = {
 
 static int assign_to_function(t_env *e, int fd, char *buff)
 {
+	t_passing arg;
+
 	if (e->has_team[fd] == -1) {
 		if (strncmp(tab[11].str, buff, tab[11].length) == 0)
                         return (tab[11].pts(buff, fd, e));
@@ -41,8 +42,12 @@ static int assign_to_function(t_env *e, int fd, char *buff)
 	}
 	for (int i = 0; i != 14; i++) {
 		if (strncmp(tab[i].str, buff, tab[i].length) == 0) {
-			printf("%d  %d\n", (int)tab[i].time, (int)e->infos->frequence);
-			return (tab[i].pts(buff, fd, e));
+			arg.e = e;
+			arg.fd = fd;
+			arg.buff = buff;
+			arg.time =  time;
+			push(tab[i].pts, &arg);
+			return (0);
 		}
 	}
 	return (0);
