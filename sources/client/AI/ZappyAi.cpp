@@ -182,7 +182,7 @@ void AI::ZappyAi::run(bool testing)
 	}
 }
 
-void AI::ZappyAi::setLevel1Decisions()
+void AI::ZappyAi::resetDecisionTree()
 {
 	_decisionTree.reset();
 }
@@ -298,6 +298,7 @@ bool AI::ZappyAi::look()
 
 void AI::ZappyAi::decisionTreeLvl1()
 {
+	resetDecisionTree();
 	_decisionTree.addDecision(1, FunctorSucceedObjectif(*this), "Did i acheive my goal ?");
 	_decisionTree.addDecision(9, FunctorIsActionQueue(*this), "Do i have any path to do ?");
 	_decisionTree.addDecision(2, FunctorMakeRandomPath(*this), "Did i Found a new random Path ?");
@@ -308,12 +309,12 @@ void AI::ZappyAi::decisionTreeLvl1()
 	_decisionTree.addDecision(7, FunctorTake(*this), "Did i succeed taking some object at my position ?");
 	_decisionTree.addDecision(8, FunctorDoINeedIt(*this), "Do i need those item ?");
 	_decisionTree.addDecision(10, FunctorEvolve(*this), "Did my evolution succeed ?");
+	_decisionTree.addDecision(11, FunctorLevelUp(*this), "LEVEL UP");
 
-	_decisionTree.addChoice(1, 6 , true);
+	_decisionTree.addChoice(1, 10 , true);
 	_decisionTree.addChoice(1, 9 , false);
-	_decisionTree.addChoice(6, 10 , true);
-	_decisionTree.addChoice(10, 9 , true);
-	_decisionTree.addChoice(6, 9 , false);
+	_decisionTree.addChoice(10, 9 , false);
+	_decisionTree.addChoice(10, 11 , true);
 	_decisionTree.addChoice(9, 3 , true);
 	_decisionTree.addChoice(9, 2 , false);
 	_decisionTree.addChoice(2, 3 , true);
@@ -340,6 +341,45 @@ bool AI::ZappyAi::CheckObjectif()
 	return true;
 }
 
+void AI::ZappyAi::objectifLvl2()
+{
+	_objectif.clear();
+	_objectif[clientSpace::LINEMATE] = 1;
+	_objectif[clientSpace::DERAUMERE] = 1;
+	_objectif[clientSpace::SIBUR] = 1;
+}
+
+void AI::ZappyAi::decisionTreeLvl2()
+{
+	resetDecisionTree();
+	_decisionTree.addDecision(1, FunctorSucceedObjectif(*this), "Did i acheive my goal ?");
+	_decisionTree.addDecision(9, FunctorIsActionQueue(*this), "Do i have any path to do ?");
+	_decisionTree.addDecision(2, FunctorMakeRandomPath(*this), "Did i Found a new random Path ?");
+	_decisionTree.addDecision(3, FunctorDoPathAction(*this), "Did i succeed my next action ?");
+	_decisionTree.addDecision(4, FunctorLook(*this), "Did succeed to look arround me ?");
+	_decisionTree.addDecision(5, FunctorMyPosIsNotEmpty(*this), "Is there something at my position ?");
+	_decisionTree.addDecision(6, FunctorIfplayerOnMyPos(*this), "Is there any player at my position ?");
+	_decisionTree.addDecision(7, FunctorTake(*this), "Did i succeed taking some object at my position ?");
+	_decisionTree.addDecision(8, FunctorDoINeedIt(*this), "Do i need those item ?");
+	_decisionTree.addDecision(10, FunctorEvolve(*this), "Did my evolution succeed ?");
+	_decisionTree.addDecision(11, FunctorLevelUp(*this), "LEVEL UP");
+
+	_decisionTree.addChoice(1, 6 , true);
+	_decisionTree.addChoice(6, 10 , true);
+	_decisionTree.addChoice(6, 9 , false);
+	_decisionTree.addChoice(1, 9 , false);
+	_decisionTree.addChoice(10, 9 , false);
+	_decisionTree.addChoice(10, 11 , true);
+	_decisionTree.addChoice(9, 3 , true);
+	_decisionTree.addChoice(9, 2 , false);
+	_decisionTree.addChoice(2, 3 , true);
+	_decisionTree.addChoice(3, 4 , true);
+	_decisionTree.addChoice(4, 5 , true);
+	_decisionTree.addChoice(5, 8 , true);
+	_decisionTree.addChoice(8, 7 , true);
+
+}
+
 /// ---------------- decision functor ------------------------
 
 bool AI::ZappyAi::FunctorIsActionQueue::operator()()
@@ -349,7 +389,7 @@ bool AI::ZappyAi::FunctorIsActionQueue::operator()()
 
 bool AI::ZappyAi::FunctorMakeRandomPath::operator()()
 {
-	_ai._pathPos = _ai._pathFinder.randomPath(_ai._postion, 10,_ai._orientation);
+	_ai._pathPos = _ai._pathFinder.randomPath(_ai._postion, (_ai._graph->getHeight() + _ai._graph->getWidth()) / 4,_ai._orientation);
 	if (_ai._pathPos.empty())
 		return false;
 	_ai.translatePathToAction(_ai._pathPos);
@@ -447,4 +487,14 @@ bool AI::ZappyAi::FunctorSucceedObjectif::operator()()
 bool AI::ZappyAi::FunctorEvolve::operator()()
 {
 	return _ai._comm.incantation();
+}
+
+bool AI::ZappyAi::FunctorLevelUp::operator()()
+{
+	_ai._level += 1;
+	if (_ai._level == 2) {
+		_ai.objectifLvl2();
+		_ai.decisionTreeLvl2();
+	}
+	return true;
 }

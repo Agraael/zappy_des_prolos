@@ -56,8 +56,10 @@ namespace AI
 
 		void decisionTreeLvl1();
 		void objectifLvl1();
+		void decisionTreeLvl2();
+		void objectifLvl2();
 
-		void setLevel1Decisions();
+		void resetDecisionTree();
 		void translatePathToAction(std::vector<IGraph::Coord2D> const& path);
 		void pathToQueue(std::vector<IGraph::Coord2D> const& path);
 
@@ -118,6 +120,10 @@ namespace AI
 		class FunctorEvolve : public DecisionFunctor {
 		public:
 			explicit FunctorEvolve(ZappyAi& ai) : DecisionFunctor(ai){};
+			bool operator() () final;};
+		class FunctorLevelUp : public DecisionFunctor {
+		public:
+			explicit FunctorLevelUp(ZappyAi& ai) : DecisionFunctor(ai){};
 			bool operator() () final;};
 	};
 }
