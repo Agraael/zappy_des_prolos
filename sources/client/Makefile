@@ -8,14 +8,19 @@
 CC              =  g++
 
 CPPFLAGS        +=	-W -Wall -Wextra
-CXXFLAGS        +=	-std=c++14 -I ../../includes/client/ -I ServerCommunication/ -I Parsing/
+CXXFLAGS        +=	-std=c++17 -I ../../includes/client/ -I ServerCommunication/ -I Parsing/ -I AI/
 
 NAME            =       ../../zappy_ai
 
 SRCS            =       main.cpp					\
 			ServerCommunication/CommunicateToServer.cpp	\
 			ServerCommunication/Client.cpp			\
-			Parsing/ParseArgs.cpp
+			Parsing/ParseArgs.cpp \
+			AI/IGraph.cpp \
+            AI/ZappyGraph.cpp \
+            AI/PathFinder2D.cpp \
+            AI/ZappyAi.cpp \
+            AI/DecisionTree.cpp
 
 OBJS            =       $(SRCS:.cpp=.o)
 

@@ -236,7 +236,7 @@ void	clientSpace::CommunicateToServer::interpretTabInventory(std::string tab)
 	for (auto n : v) {
 		pos = n.find(" ");
 		n.erase(n.begin(), n.begin() + pos + 1);
-		_vec[i].second = std::stoi(n);
+		_vec[i].second = std::atoi(n.c_str());
 		++i;
 	}
 }
