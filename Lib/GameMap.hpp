@@ -14,8 +14,10 @@ namespace graphic
     class GameMap : public IGrphGame
     {
         graphic::IrrlichtLib *_lib;
+        size_t _width;
+        size_t _height;
     public:
-        GameMap(graphic::IrrlichtLib *const lib);
+        GameMap(graphic::IrrlichtLib *const lib , size_t width, size_t height);
         ~GameMap() = default;
         void display();
         void eventManager();

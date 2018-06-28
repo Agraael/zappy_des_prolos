@@ -8,7 +8,7 @@
 #include "IGrphGame.hpp"
 #include "IrrlichtLib.hpp"
 #include "LettersController.hpp"
-//#include "Inventary.hpp"
+#include "Inventary.hpp"
 
 namespace graphic {
     typedef struct infosPlayer_s {
@@ -23,6 +23,9 @@ namespace graphic {
         infosPlayer_t _lvl;
         infosPlayer_t _life;
         bool _inventaryIsOpen;
+        vec2d _sizeWindow;
+        irr::gui::IGUIButton	*_menuStone;
+        std::vector<int> _stoneVector;
     public:
         GameInterface(graphic::IrrlichtLib *const irrlichtLib, std::string const &nameTeam);
         ~GameInterface() = default;

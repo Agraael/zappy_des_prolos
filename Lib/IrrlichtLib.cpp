@@ -6,7 +6,7 @@
 
 graphic::IrrlichtLib::IrrlichtLib()
 {
-	_screenSize = {1080, 720};
+	_screenSize = {2080, 1720};
 	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(_screenSize.x, _screenSize.y), 16, false, false, false, 0);
 	if (!_device)
 		std::cout << "error device" << std::endl;
@@ -26,7 +26,7 @@ graphic::IrrlichtLib::~IrrlichtLib()
 
 void	graphic::IrrlichtLib::displayAll()
 {
-	_driver->beginScene(true, true, irr::video::SColor(255,100,101,140));
+	_driver->beginScene(true, true, irr::video::SColor(50,164,224,229));
 	_sceneManager->drawAll();
 	_guiEnv->drawAll();
 	_driver->endScene();
@@ -62,6 +62,21 @@ irr::gui::IGUIButton	*graphic::IrrlichtLib::printButton(const infos_t &infos)
 	std::wstring wideStrDesc = std::wstring(infos._desc.begin(), infos._desc.end());
 	const wchar_t *descriptionToPrint = wideStrDesc.c_str();
 	irr::gui::IGUIButton *butCustom = _guiEnv->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
+	butCustom->setDrawBorder(0);
+	butCustom->setImage(_driver->getTexture(infos._path.c_str()));
+	butCustom->setScaleImage(true);
+	butCustom->setUseAlphaChannel(true);
+	return (butCustom);
+
+}
+
+irr::gui::IGUIButton	*graphic::IrrlichtLib::printButton(const infos_t &infos, irr::gui::IGUIEnvironment *env)
+{
+	std::wstring wideStr = std::wstring(infos._name.begin(), infos._name.end());
+	const wchar_t *nameToPrint = wideStr.c_str();
+	std::wstring wideStrDesc = std::wstring(infos._desc.begin(), infos._desc.end());
+	const wchar_t *descriptionToPrint = wideStrDesc.c_str();
+	irr::gui::IGUIButton *butCustom = env->addButton(irr::core::rect<irr::s32>(infos._x, infos._y, infos._w, infos._h), 0, infos._type, nameToPrint, descriptionToPrint);
 	butCustom->setDrawBorder(0);
 	butCustom->setImage(_driver->getTexture(infos._path.c_str()));
 	butCustom->setScaleImage(true);
@@ -168,4 +183,15 @@ void	graphic::IrrlichtLib::clearGui() noexcept
 void	graphic::IrrlichtLib::clearScene() noexcept
 {
 	_sceneManager->clear();
+}
+
+irr::gui::IGUIEnvironment *graphic::IrrlichtLib::createNewWindow(size_t posX, size_t posY, size_t width, size_t height)
+{
+	irr::gui::IGUISkin*mskin= _guiEnv->createSkin(irr::gui::EGST_WINDOWS_CLASSIC);
+	irr::video::SColor mcol;
+	mcol.set(50,128,128,128);
+	mskin->setColor(irr::gui::EGDC_3D_FACE, mcol);
+	_guiEnv->setSkin(mskin);
+	_guiEnv->addWindow(irr::core::rect<irr::s32>(posX, posY, width, height), false, L"Inventary");
+	return (_guiEnv);
 }

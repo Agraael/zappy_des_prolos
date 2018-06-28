@@ -20,7 +20,14 @@ SRCS            =       main.cpp					\
             AI/ZappyGraph.cpp \
             AI/PathFinder2D.cpp \
             AI/ZappyAi.cpp \
-            AI/DecisionTree.cpp
+            AI/DecisionTree.cpp \
+            ../Lib/IrrlichtLib.cpp \
+            ../Lib/LettersController.cpp \
+            ../Lib/GameInterface.cpp \
+            ../Lib/LibEventManager.cpp \
+            ../Lib/Inventary.cpp \
+            ../Lib/GameMap.cpp \
+            ../Lib/Player.cpp \
 
 OBJS            =       $(SRCS:.cpp=.o)
 

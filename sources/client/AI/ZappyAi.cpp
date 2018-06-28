@@ -12,7 +12,7 @@
 #define VNAME(x) #x
 
 AI::ZappyAi::ZappyAi(int width, int height, clientSpace::CommunicateToServer& comm)
-	: _comm(comm), _graph(std::make_shared<ZappyGraph>(width, height)), _pathFinder(), _decisionTree()
+	: _comm(comm), _graph(std::make_shared<ZappyGraph>(width, height)), _pathFinder(), _decisionTree() , _lib(new graphic::IrrlichtLib), _map(_lib, width, height)
 {
 	_pathFinder.setGraph(_graph);
 }
@@ -42,6 +42,10 @@ std::map<clientSpace::tilesType, size_t> const& AI::ZappyAi::getInventory() cons
 	return _inventory;
 }
 
+void AI::ZappyAi::print3d()
+{
+
+}
 
 void AI::ZappyAi::dump()
 {
@@ -175,6 +179,7 @@ void AI::ZappyAi::run(bool testing)
 	while (666) {
 		_decisionTree.Do(1, testing);
 		if (testing) {
+			print3d();
 			dump();
 			usleep(500000);
 			std::cout << "\033c" <<std::endl;

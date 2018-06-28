@@ -62,8 +62,10 @@ namespace graphic {
 			irr::scene::ISceneNode	*createSphere(const vec3df &, const std::string &, irr::s32, const sphere_t &);
 			void			setCamera(irr::scene::ISceneNode *, vec3df pos);
 			void			setCamera(const vec3df &, const vec3df &t);
+            irr::gui::IGUIEnvironment    *createNewWindow(size_t posX, size_t posY, size_t width, size_t height);
 			irr::gui::IGUIEditBox	*drawEditBox(const infos_t &);
 			irr::gui::IGUIButton	*printButton(const infos_t &);
+			irr::gui::IGUIButton	*printButton(const infos_t &, irr::gui::IGUIEnvironment *);
 			void			drawText(size_t, size_t, size_t, std::string const&);
 			irr::gui::IGUIScrollBar	*scrollBarButton(const infos_t &);
             void modifyPosElem(irr::scene::ISceneNode  *elem, vec3df pos) { elem->setPosition(irr::core::vector3df(pos.x ,pos.y, pos.z)); }

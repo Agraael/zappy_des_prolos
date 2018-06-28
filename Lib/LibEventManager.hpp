@@ -26,6 +26,7 @@ namespace graphic
 		CLOSE_INVENTARY,
 		GUI_ID_NO_BUTTON,
 		EXIT_MAINMENU,
+		SHOW_LINEMATE,
 	};
 
 	class LibEventManager : public irr::IEventReceiver

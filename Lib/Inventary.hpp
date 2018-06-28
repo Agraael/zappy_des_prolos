@@ -13,6 +13,8 @@ namespace graphic
     class Inventary : public IGrphGame
     {
         graphic::IrrlichtLib *_lib;
+        bool _isOpen;
+        vec2d _size;
     public:
         Inventary(graphic::IrrlichtLib *const lib);
         ~Inventary() = default;
@@ -20,6 +22,7 @@ namespace graphic
         void  eventManager() {} //function de l'interface
         void  eventManager(bool isOpen);
         void  createWindowInventary();
+        void  printBackground();
         void  printLinemate(size_t nbrStone);
         void  printDeraumere(size_t nbrStone);
         void  printSibur(size_t nbrStone);

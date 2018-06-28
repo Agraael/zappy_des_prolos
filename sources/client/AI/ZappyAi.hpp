@@ -16,6 +16,12 @@
 #include "ZappyGraph.hpp"
 #include "DecisionTree.hpp"
 #include "CommunicateToServer.hpp"
+#include "IrrlichtLib.hpp"
+#include "IGrphGame.hpp"
+#include "GameInterface.hpp"
+#include "Inventary.hpp"
+#include "GameMap.hpp"
+#include "Player.hpp"
 
 namespace AI
 {
@@ -30,6 +36,7 @@ namespace AI
 		PathFinder2D::Direction getOrientation() const;
 		IGraph::Coord2D const& getPostion() const;
 		size_t getLevel() const;
+		void print3d();
 		std::map<clientSpace::tilesType, size_t> const& getInventory() const;
 
 		enum class MoveAction {
@@ -53,7 +60,8 @@ namespace AI
 		std::queue<MoveAction> _actionQueue {};
 		std::queue<IGraph::Coord2D> _pathQueue {};
 		std::vector<IGraph::Coord2D> _pathPos {};
-
+		graphic::IrrlichtLib *_lib;
+		graphic::GameMap *_map;
 		void decisionTreeLvl1();
 		void objectifLvl1();
 		void decisionTreeLvl2();
