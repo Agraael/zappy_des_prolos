@@ -9,7 +9,6 @@ CC		= gcc
 
 CFLAGS	+= -W -Wall -Wextra -Werror -Wfatal-errors -lm -g3
 
-LDFLAGS = -L. -lpthread
 
 CFLAGS		= -I ../../includes/server/
 
@@ -45,7 +44,7 @@ SRCS            =	main.c		\
 OBJS            = $(SRCS:.c=.o)
 
 all :		$(OBJS)
-		$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
+		$(CC) $(OBJS) -o $(NAME)
 
 clean :
 		rm -f $(OBJS)

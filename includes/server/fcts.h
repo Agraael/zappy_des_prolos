@@ -6,7 +6,7 @@
 */
 
 #ifndef FTCS_H_
-	#define FTCS_H_
+#define FTCS_H_
 
 #include <stdbool.h>
 #include "struct.h"
@@ -49,7 +49,7 @@ char **my_str_to_wordtab(char *str, char delim);
 void create_server(infos_t *infos);
 void generate_map(infos_t *infos_game);
 
-void gest_time(float time, t_env *e, int fd);
-void *live_alone(void *arg);
+void gest_time(float time, t_env *e, int fd, clock_t tempsdebut);
+void live_alone(t_env *e);
 
 #endif /* !FTCS_H_ */

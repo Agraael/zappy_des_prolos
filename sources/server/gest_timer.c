@@ -7,49 +7,25 @@
 
 #include "struct.h"
 #include "fcts.h"
-#include <pthread.h>
+#include <time.h>
 
-void *live_alone(void *argument)
+void live_alone(t_env *e)
 {
-    int b = 0;
-    int max = 0;
-    thread_t *arg = (thread_t *)argument;
-
-    while (!b)
-    {
-        max = 0;
-        sleep(1);
         for (int i = 0; i < MAX_FD; i++)
-            if (arg->e->fd_type[i] == FD_CLIENT) {
-                arg->e->inventory[i].food -= 1;
-                //printf("le joueur %d a %d food\n", i, (int)arg->e->inventory[i].food);
+            if (e->fd_type[i] == FD_CLIENT) {
+                printf("[%d->%d]\n", i, (int)e->inventory[i].food);
+                e->inventory[i].food -= 1;
             }
-    }
-    pthread_exit(NULL);
 }
 
-void *timer(void *argument)
+void gest_time(float time, t_env *e, int fd, clock_t tempsdebut)
 {
-    thread_t *arg = (thread_t *)argument;
+    clock_t tempsFin = clock();
+    double delta;
 
-    arg->e->fd_type[arg->fd] = FD_FREE;
-    usleep(arg->time * 1000000);
-    arg->e->fd_type[arg->fd] = FD_CLIENT;
-    pthread_exit(NULL);
-}
+    tempsFin = clock();
+    e->inventory[fd].food -= time;
+    delta =  (tempsFin - tempsdebut) / CLOCKS_PER_SEC;
+    e->inventory[fd].food -= delta;
 
-void gest_time(float time, t_env *e, int fd)
-{
-       pthread_t thread_timer;
-       thread_t argument;
-
-       e->inventory[fd].food -= time;
-       argument.e = e;
-       argument.fd = fd;
-       argument.time = time;
-       if(pthread_create(&thread_timer, NULL, timer, (void *)&argument) == -1)
-           return ;
-        if (pthread_join(thread_timer, NULL)) {
-            return ;
-    }
 }

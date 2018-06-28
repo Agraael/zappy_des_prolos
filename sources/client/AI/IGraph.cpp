@@ -30,3 +30,13 @@ bool AI::IGraph::Coord2D::operator!=(AI::IGraph::Coord2D const& rhs) const
 {
 	return !(rhs == *this);
 }
+
+AI::IGraph::Coord2D AI::IGraph::Coord2D::operator+(AI::IGraph::Coord2D const& rhs)
+{
+	return {this->x + rhs.x, this->y + rhs.y};
+}
+
+AI::IGraph::Coord2D AI::IGraph::Coord2D::operator-(AI::IGraph::Coord2D const& rhs)
+{
+	return {this->x - rhs.x, this->y - rhs.y};
+}

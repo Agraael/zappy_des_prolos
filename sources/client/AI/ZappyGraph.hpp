@@ -16,14 +16,15 @@
 #include <cmath>
 #include <list>
 #include "IGraph.hpp"
+#include "CommunicateToServer.hpp"
 
 namespace AI
 {
-	enum class ZappyElement {
-		FOOD,
-		LINEMATE, DERAUMERE, SIBUR, MENDIANE, PHIRAS, THYSTAME,
-		NONE, UNKNOW, PLAYER
-	};
+//	enum class ZappyElement {
+//		FOOD,
+//		LINEMATE, DERAUMERE, SIBUR, MENDIANE, PHIRAS, THYSTAME,
+//		PLAYER
+//	};
 
 	class ZappyGraph
 		: public IGraph
@@ -33,7 +34,8 @@ namespace AI
 		struct ZappyNode
 			: IGraph::Node {
 			std::size_t age {0};
-			std::vector<AI::ZappyElement> elements {};
+			bool unknown {true};
+			std::vector<clientSpace::tilesType> elements {};
 		};
 
 		using ZappyNodePtr = std::shared_ptr<ZappyNode>;
